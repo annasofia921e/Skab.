@@ -1351,196 +1351,227 @@ function looksLikeFood(line) {
 
 function filterReceiptText(text) {
 
-    const lines =
-        text
-            .split("\n")
-            .map(
-                function (line) {
+```
+const lines = text
+    .split("\n")
+    .map(function (line) {
 
-                    return line
-                        .replace(/\|/g, "")
-                        .trim();
+        return line
+            .replace(/\|/g, "")
+            .replace(/\s+/g, " ")
+            .trim();
 
-                }
-            )
-            .filter(
-                function (line) {
+    })
+    .filter(function (line) {
 
-                    return line.length > 1;
+        return line.length > 1;
 
-                }
-            );
+    });
 
 
-    const foodItems = [];
-
-    const seenItems = new Set();
-
-
-    lines.forEach(
-        function (originalLine) {
-
-            let line =
-                originalLine;
+const foodItems = [];
+const seenItems = new Set();
 
 
-            const upperLine =
-                line
-                    .toUpperCase()
-                    .replace(/\s+/g, " ")
-                    .trim();
+lines.forEach(function (originalLine) {
+
+    let line = originalLine;
 
 
-            /* Pris */
-
-            if (isReceiptPrice(line)) {
-
-                return;
-
-            }
+    const upperLine =
+        line
+            .toUpperCase()
+            .replace(/\s+/g, " ")
+            .trim();
 
 
-            /* Kvitteringsord */
+    /* ==============================
+       PRISLINJER
+    ============================== */
 
-            const containsReceiptWord =
-                RECEIPT_IGNORE_WORDS.some(
-                    function (word) {
-
-                        return upperLine.includes(
-                            word
-                        );
-
-                    }
-                );
+    if (isReceiptPrice(line)) {
+        return;
+    }
 
 
-            if (containsReceiptWord) {
+    /* ==============================
+       KVITTERINGSTEKST
+    ============================== */
 
-                return;
+    const containsReceiptWord =
+        RECEIPT_IGNORE_WORDS.some(
+            function (word) {
+
+                return upperLine.includes(word);
 
             }
+        );
 
 
-            /* Supermarked */
-
-            const containsSupermarket =
-                SUPERMARKETS.some(
-                    function (store) {
-
-                        return upperLine.includes(
-                            store
-                        );
-
-                    }
-                );
+    if (containsReceiptWord) {
+        return;
+    }
 
 
-            if (containsSupermarket) {
+    /* ==============================
+       SUPERMARKED
+    ============================== */
 
-                return;
+    const containsSupermarket =
+        SUPERMARKETS.some(
+            function (store) {
+
+                return upperLine.includes(store);
 
             }
+        );
 
 
-            /* Fjern pris */
-
-            line =
-                removePriceFromLine(line);
-
-
-            /* Fjern stregkode */
-
-            line =
-                removeBarcode(line);
+    if (containsSupermarket) {
+        return;
+    }
 
 
-            if (!line) {
+    /* ==============================
+       FJERN PRIS
+    ============================== */
 
-                return;
-
-            }
-
-
-            /* Fjern mærkelige OCR-tegn */
-
-            line =
-                line
-                    .replace(
-                        /^[^A-Za-zÆØÅæøå]+/,
-                        ""
-                    )
-                    .replace(
-                        /[^A-Za-zÆØÅæøå0-9%.,'&+\- ]+$/g,
-                        ""
-                    )
-                    .trim();
+    line = removePriceFromLine(line);
 
 
-            if (!line) {
+    /* ==============================
+       FJERN STREGKODER
+    ============================== */
 
-                return;
-
-            }
-
-
-            /* For få bogstaver */
-
-            const letters =
-                line.match(
-                    /[A-Za-zÆØÅæøå]/g
-                );
+    line = removeBarcode(line);
 
 
-            if (
-                !letters ||
-                letters.length < 3
-            ) {
+    /* ==============================
+       FJERN DATOER
+    ============================== */
 
-                return;
-
-            }
-
-
-            /* Skal ligne mad */
-
-            if (!looksLikeFood(line)) {
-
-                return;
-
-            }
-
-
-            /* Undgå dubletter */
-
-            const normalized =
-                normalizeIngredientName(line);
-
-
-            if (
-                seenItems.has(normalized)
-            ) {
-
-                return;
-
-            }
-
-
-            seenItems.add(normalized);
-
-
-            foodItems.push({
-
-                name: line
-
-            });
-
-        }
+    line = line.replace(
+        /\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b/g,
+        ""
     );
 
 
-    return foodItems;
+    /* ==============================
+       FJERN MÆNGDE / VÆGT
+    ============================== */
+
+    line = line.replace(
+        /\b\d+(?:[.,]\d+)?\s*(?:kg|g|mg|l|ml|cl|stk)\b/gi,
+        ""
+    );
+
+
+    /* ==============================
+       RENS OCR-TEGN
+    ============================== */
+
+    line = line
+        .replace(/^[^A-Za-zÆØÅæøå]+/, "")
+        .replace(
+            /[^A-Za-zÆØÅæøå0-9%.,'&+\- ]+$/g,
+            ""
+        )
+        .replace(/\s+/g, " ")
+        .trim();
+
+
+    if (!line) {
+        return;
+    }
+
+
+    /* ==============================
+       SKAL INDEHOLDE BOGSTAVER
+    ============================== */
+
+    const letters =
+        line.match(
+            /[A-Za-zÆØÅæøå]/g
+        );
+
+
+    if (!letters || letters.length < 3) {
+        return;
+    }
+
+
+    /* ==============================
+       FOR MEGET TAL = IKKE VARE
+    ============================== */
+
+    const numbers =
+        line.match(/[0-9]/g) || [];
+
+
+    if (
+        numbers.length >
+        letters.length
+    ) {
+        return;
+    }
+
+
+    /* ==============================
+       FOR KORT / MÆRKELIG TEKST
+    ============================== */
+
+    if (line.length < 3) {
+        return;
+    }
+
+
+    if (line.length > 60) {
+        return;
+    }
+
+
+    /* ==============================
+       DUBLETTER
+    ============================== */
+
+    const normalized =
+        line
+            .toLowerCase()
+            .replace(/[^a-zæøå0-9]+/g, "")
+            .trim();
+
+
+    if (!normalized) {
+        return;
+    }
+
+
+    if (seenItems.has(normalized)) {
+        return;
+    }
+
+
+    seenItems.add(normalized);
+
+
+    /* ==============================
+       GEM VAREN
+    ============================== */
+
+    foodItems.push({
+
+        name: line
+
+    });
+
+});
+
+
+return foodItems;
+```
 
 }
+
 
 
 /* ========================================
