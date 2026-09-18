@@ -1,0 +1,390 @@
+/* ========================================
+   SKAB. — FAVORITTER
+======================================== */
+
+:root {
+    --background: #C7CED1;
+    --text: #0a0a0a;
+    --muted: #777b71;
+    --navy: #172a46;
+    --navy-light: #29415f;
+    --line: #d7d6ce;
+}
+
+
+.favoritter-page {
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--text);
+    padding: 30px 6% 45px;
+    font-family: "DM Sans", sans-serif;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.favoritter-page .site-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+}
+
+.favoritter-page .logo {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.favoritter-page .logo span {
+    color: var(--navy);
+}
+
+.favoritter-page .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 38px;
+}
+
+.favoritter-page .main-nav a {
+    position: relative;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.favoritter-page .main-nav a.active {
+    color: var(--navy);
+}
+
+.favoritter-page .main-nav a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    height: 1.5px;
+    background: var(--navy);
+}
+
+
+/* ========================================
+   INTRO
+======================================== */
+
+.favoritter-page .page-intro {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 85px 0 70px;
+}
+
+.favoritter-page .eyebrow {
+    margin: 0 0 25px;
+    color: var(--navy);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.favoritter-page .page-intro h1 {
+    margin: 0;
+    font-family: "DM Sans", sans-serif;
+    font-size: clamp(55px, 8vw, 110px);
+    font-weight: 500;
+    line-height: 0.88;
+    letter-spacing: -5px;
+    color: #20271f;
+}
+
+.favoritter-page .intro-description {
+    width: 260px;
+    margin: 0 0 4px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+
+/* ========================================
+   FAVORITTER
+======================================== */
+
+.favorites {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.favorites-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--line);
+}
+
+.small-label {
+    margin: 0 0 7px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.favorites-header h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+
+/* ========================================
+   FAVORIT-LISTE
+======================================== */
+
+.favorite-item {
+    display: grid;
+
+    /*
+       Mere plads til hvert felt,
+       så vurdering og antal gange
+       ikke overlapper.
+    */
+    grid-template-columns:
+        minmax(250px, 1fr)
+        120px
+        70px
+        120px
+        30px;
+
+    gap: 25px;
+    align-items: center;
+
+    padding: 25px 0;
+
+    border-bottom: 1px solid var(--line);
+
+    transition:
+        padding 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.favorite-item:hover {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+
+/* ========================================
+   OPSKRIFTSNAVN
+======================================== */
+
+.favorite-name {
+    text-decoration: none;
+    color: var(--text);
+    min-width: 0;
+}
+
+.favorite-name h3 {
+    margin: 0 0 7px;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.7px;
+}
+
+.favorite-name span {
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+
+/* ========================================
+   STJERNER
+======================================== */
+
+.favorite-stars {
+    color: var(--navy);
+    font-size: 16px;
+    letter-spacing: 2px;
+    white-space: nowrap;
+}
+
+
+/* ========================================
+   RATING
+======================================== */
+
+.favorite-rating-text {
+    color: var(--muted);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+
+/* ========================================
+   ANTAL GANGE LAVET
+======================================== */
+
+.favorite-made {
+    color: var(--muted);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+
+/* ========================================
+   FJERN
+======================================== */
+
+.remove-rating {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.remove-rating:hover {
+    color: var(--navy);
+}
+
+
+/* ========================================
+   INGEN FAVORITTER
+======================================== */
+
+.empty-favorites {
+    padding: 70px 0;
+}
+
+.empty-favorites h3 {
+    margin: 0 0 10px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.empty-favorites p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+
+/* ========================================
+   FOOTER
+======================================== */
+
+.favoritter-page .page-footer {
+    margin-top: 100px;
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+
+    .favorite-item {
+        grid-template-columns:
+            1fr
+            auto
+            auto
+            30px;
+
+        gap: 8px 20px;
+    }
+
+    .favorite-name {
+        grid-column: 1 / 4;
+    }
+
+    .favorite-stars {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .favorite-rating-text {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .favorite-made {
+        grid-column: 1 / 3;
+        grid-row: 3;
+    }
+
+    .remove-rating {
+        grid-column: 4;
+        grid-row: 1 / 4;
+    }
+
+}
+
+
+/* ========================================
+   MOBIL
+======================================== */
+
+@media (max-width: 600px) {
+
+    .favoritter-page {
+        padding: 22px 7% 30px;
+    }
+
+    .favoritter-page .main-nav {
+        gap: 15px;
+    }
+
+    .favoritter-page .main-nav a {
+        font-size: 7px;
+        letter-spacing: 1px;
+    }
+
+    .favoritter-page .page-intro {
+        display: block;
+        padding: 65px 0 55px;
+    }
+
+    .favoritter-page .intro-description {
+        margin-top: 30px;
+    }
+
+    .favorite-item {
+        padding: 22px 0;
+    }
+
+    .favorite-name h3 {
+        font-size: 20px;
+    }
+
+    .favorite-stars {
+        font-size: 15px;
+    }
+
+    .favorite-rating-text,
+    .favorite-made {
+        font-size: 9px;
+    }
+
+    .favoritter-page .page-footer {
+        margin-top: 65px;
+    }
+
+}

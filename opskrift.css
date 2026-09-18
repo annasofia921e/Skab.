@@ -1,0 +1,1040 @@
+/* ========================================
+   SKAB. — ENKELT OPSKRIFT
+======================================== */
+
+
+/* ----------------------------------------
+   FARVER
+---------------------------------------- */
+
+:root {
+
+    --background: #C7CED1;
+
+    --text: #0a0a0a;
+
+    --muted: #777b71;
+
+    --navy: #172a46;
+
+    --navy-light: #29415f;
+
+    --line: #d7d6ce;
+
+}
+
+
+/* ----------------------------------------
+   GRUNDLÆGGENDE
+---------------------------------------- */
+
+.opskrift-page {
+
+    min-height: 100vh;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    padding: 30px 6% 45px;
+
+    font-family: "DM Sans", sans-serif;
+
+}
+
+
+/* ----------------------------------------
+   HEADER
+---------------------------------------- */
+
+.site-header {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid var(--line);
+
+}
+
+
+.logo {
+
+    text-decoration: none;
+
+    color: var(--text);
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    letter-spacing: -1px;
+
+}
+
+
+.logo span {
+
+    color: var(--navy);
+
+}
+
+
+.main-nav {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 38px;
+
+}
+
+
+.main-nav a {
+
+    position: relative;
+
+    text-decoration: none;
+
+    color: var(--text);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+}
+
+
+.main-nav a.active {
+
+    color: var(--navy);
+
+}
+
+
+.main-nav a.active::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: -10px;
+
+    height: 1.5px;
+
+    background: var(--navy);
+
+}
+
+
+/* ----------------------------------------
+   TILBAGE
+---------------------------------------- */
+
+.back-link {
+
+    display: inline-block;
+
+    margin-top: 55px;
+
+    color: var(--muted);
+
+    text-decoration: none;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+
+    transition: color 0.2s ease;
+
+}
+
+
+.back-link:hover {
+
+    color: var(--navy);
+
+}
+
+
+/* ----------------------------------------
+   OPSKRIFT
+---------------------------------------- */
+
+.recipe-detail {
+
+    width: 100%;
+
+    max-width: 1000px;
+
+    margin: 70px auto 0;
+
+}
+
+
+/* ----------------------------------------
+   TOP
+---------------------------------------- */
+
+.recipe-category {
+
+    margin: 0 0 20px;
+
+    color: var(--navy);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+}
+
+
+.recipe-detail h1 {
+
+    margin: 0;
+
+    max-width: 850px;
+
+    font-size: clamp(55px, 9vw, 120px);
+
+    font-weight: 500;
+
+    line-height: 0.88;
+
+    letter-spacing: -6px;
+
+}
+
+
+.recipe-description {
+
+    max-width: 500px;
+
+    margin: 35px 0 0;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+}
+
+
+/* ----------------------------------------
+   INFO
+---------------------------------------- */
+
+.recipe-meta {
+
+    display: flex;
+
+    gap: 50px;
+
+    margin-top: 45px;
+
+    padding: 20px 0;
+
+    border-top: 1px solid var(--line);
+
+    border-bottom: 1px solid var(--line);
+
+}
+
+
+.recipe-meta-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+}
+
+
+.recipe-meta-item span {
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+
+}
+
+
+.recipe-meta-item strong {
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+}
+
+
+/* ----------------------------------------
+   INDHOLD
+---------------------------------------- */
+
+.recipe-body {
+
+    display: grid;
+
+    grid-template-columns: 280px 1fr;
+
+    gap: 100px;
+
+    margin-top: 80px;
+
+}
+
+
+.recipe-body h2 {
+
+    margin: 0 0 25px;
+
+    font-size: 20px;
+
+    font-weight: 500;
+
+    letter-spacing: -0.5px;
+
+}
+
+
+/* ----------------------------------------
+   INGREDIENSER
+---------------------------------------- */
+
+.ingredients {
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+}
+
+
+.ingredients li {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid var(--line);
+
+    font-size: 12px;
+
+}
+
+
+.ingredients li span {
+
+    color: var(--muted);
+
+}
+
+
+/* ----------------------------------------
+   FREMGANGSMÅDE
+---------------------------------------- */
+
+.steps {
+
+    margin: 0;
+
+    padding: 0;
+
+    list-style: none;
+
+    counter-reset: steps;
+
+}
+
+
+.steps li {
+
+    position: relative;
+
+    padding: 0 0 30px 50px;
+
+    margin-bottom: 30px;
+
+    border-bottom: 1px solid var(--line);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    counter-increment: steps;
+
+}
+
+
+.steps li::before {
+
+    content: counter(steps, decimal-leading-zero);
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    color: var(--navy);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* ----------------------------------------
+   FOOTER
+---------------------------------------- */
+
+.page-footer {
+
+    width: 100%;
+
+    max-width: 1200px;
+
+    margin-top: 100px;
+
+    padding-top: 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    border-top: 1px solid var(--line);
+
+}
+
+
+.page-footer span {
+
+    color: #969990;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+}
+
+
+/* ----------------------------------------
+   MOBIL
+---------------------------------------- */
+
+@media (max-width: 700px) {
+
+    .opskrift-page {
+
+        padding: 22px 7% 30px;
+
+    }
+
+
+    .main-nav {
+
+        gap: 15px;
+
+    }
+
+
+    .main-nav a {
+
+        font-size: 7px;
+
+        letter-spacing: 1px;
+
+    }
+
+
+    .back-link {
+
+        margin-top: 40px;
+
+    }
+
+
+    .recipe-detail {
+
+        margin-top: 55px;
+
+    }
+
+
+    .recipe-detail h1 {
+
+        font-size: 52px;
+
+        letter-spacing: -3px;
+
+    }
+
+
+    .recipe-description {
+
+        font-size: 12px;
+
+    }
+
+
+    .recipe-meta {
+
+        gap: 25px;
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .recipe-body {
+
+        grid-template-columns: 1fr;
+
+        gap: 60px;
+
+        margin-top: 60px;
+
+    }
+
+
+    .page-footer {
+
+        margin-top: 65px;
+
+    }
+
+
+    .page-footer span {
+
+        font-size: 7px;
+
+    }
+
+
+    .page-footer span:last-child {
+
+        display: none;
+
+    }
+
+}
+/* ========================================
+   INGREDIENS-MATCH
+======================================== */
+
+.recipe-match {
+
+    margin-top: 45px;
+
+    padding: 20px 0;
+
+    border-top: 1px solid var(--line);
+
+}
+
+
+.recipe-match > div:first-child {
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 10px;
+
+}
+
+
+.recipe-match strong {
+
+    color: var(--navy);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+}
+
+
+.recipe-match span {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+
+.match-bar {
+
+    width: 100%;
+
+    height: 3px;
+
+    margin-top: 13px;
+
+    background: #b9c0c3;
+
+    overflow: hidden;
+
+}
+
+
+.match-progress {
+
+    height: 100%;
+
+    background: var(--navy);
+
+    transition: width 0.5s ease;
+
+}
+
+
+/* ----------------------------------------
+   INGREDIENS STATUS
+---------------------------------------- */
+
+.ingredient-status {
+
+    display: inline-block;
+
+    width: 20px;
+
+    color: var(--navy);
+
+    font-weight: 700;
+
+}
+
+
+.ingredients li.available {
+
+    color: var(--text);
+
+}
+
+
+.ingredients li.missing {
+
+    color: var(--muted);
+
+}
+
+
+.ingredients li.missing .ingredient-status {
+
+    color: var(--muted);
+
+}
+.ingredient-amount {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.ingredient-amount small {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+}
+
+.ingredients li.partial .ingredient-amount small {
+    color: var(--navy);
+}
+
+.ingredients li.missing .ingredient-amount small {
+    color: var(--danger);
+}
+
+.ingredient-status {
+    display: inline-block;
+    width: 18px;
+    font-weight: 600;
+}
+
+.ingredients li.partial .ingredient-status {
+    color: var(--navy);
+}
+
+.ingredients li.missing .ingredient-status {
+    color: var(--danger);
+}
+/* ========================================
+   LAV OPSKRIFT
+======================================== */
+
+.make-recipe-button {
+    margin-top: 45px;
+    border: none;
+    padding: 16px 25px;
+    background: var(--navy);
+    color: #f3f1e9;
+    font-family: "DM Sans", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.make-recipe-button:hover {
+    background: var(--navy-light);
+    transform: translateY(-1px);
+}
+
+.recipe-made-message {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-left: 2px solid var(--navy);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.recipe-made-message strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+
+.recipe-made-message span {
+    color: var(--muted);
+    font-size: 10px;
+}
+/* ========================================
+   LAV OPSKRIFT
+======================================== */
+
+.make-recipe-button {
+    margin-top: 45px;
+    width: 100%;
+    border: 1px solid var(--navy);
+    padding: 17px 25px;
+    background: var(--navy);
+    color: #f3f1e9;
+    font-family: "DM Sans", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.make-recipe-button:hover {
+    background: var(--navy-light);
+    transform: translateY(-1px);
+}
+
+
+/* ========================================
+   BEKRÆFTELSESBOKS
+======================================== */
+
+.recipe-confirmation {
+    margin-top: 20px;
+    padding: 24px;
+    border: 1px solid var(--navy);
+    background: #f3f1e9;
+}
+
+.recipe-confirmation.hidden {
+    display: none;
+}
+
+.recipe-confirmation-label {
+    margin: 0 0 8px;
+    color: var(--navy);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.recipe-confirmation h3 {
+    margin: 0 0 10px;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+.recipe-confirmation p {
+    margin: 0;
+    max-width: 500px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.confirm-button,
+.cancel-button {
+    border: none;
+    padding: 13px 18px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.confirm-button {
+    background: var(--navy);
+    color: #f3f1e9;
+}
+
+.confirm-button:hover {
+    background: var(--navy-light);
+}
+
+.cancel-button {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text);
+}
+
+.cancel-button:hover {
+    border-color: var(--navy);
+}
+
+
+/* ========================================
+   FÆRDIG BESKED
+======================================== */
+
+.recipe-made-message {
+    margin-top: 20px;
+    padding: 20px 22px;
+    border-left: 3px solid var(--navy);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.recipe-made-message.hidden {
+    display: none;
+}
+
+.recipe-made-message strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.recipe-made-message span {
+    color: var(--muted);
+    font-size: 10px;
+}
+/* ========================================
+   OPSKRIFTS HANDLINGER
+======================================== */
+
+.recipe-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 45px;
+}
+
+.make-recipe-button,
+.rate-recipe-button {
+    margin-top: 0;
+    border: 1px solid var(--navy);
+    padding: 17px 25px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.make-recipe-button {
+    background: var(--navy);
+    color: #f3f1e9;
+}
+
+.rate-recipe-button {
+    background: transparent;
+    color: var(--navy);
+}
+
+.make-recipe-button:hover,
+.rate-recipe-button:hover {
+    background: var(--navy-light);
+    color: #f3f1e9;
+    transform: translateY(-1px);
+}
+
+
+/* ========================================
+   VURDER OPSKRIFT
+======================================== */
+
+.recipe-rating {
+    margin-top: 20px;
+    padding: 25px;
+    border: 1px solid var(--navy);
+    background: #f3f1e9;
+}
+
+.recipe-rating.hidden {
+    display: none;
+}
+
+.recipe-rating-label {
+    margin: 0 0 8px;
+    color: var(--navy);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.recipe-rating h3 {
+    margin: 0 0 18px;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+
+/* ========================================
+   STJERNER
+======================================== */
+
+.rating-stars {
+    display: flex;
+    gap: 5px;
+}
+
+.rating-star {
+    border: none;
+    padding: 0;
+    background: transparent;
+    color: #b8b8b2;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease,
+                transform 0.15s ease;
+}
+
+.rating-star:hover {
+    color: var(--navy);
+    transform: scale(1.08);
+}
+
+.rating-star.selected {
+    color: var(--navy);
+}
+
+
+/* ========================================
+   GEM RATING
+======================================== */
+
+.save-rating-button {
+    margin-top: 20px;
+    border: none;
+    padding: 13px 18px;
+    background: var(--navy);
+    color: #f3f1e9;
+    font-family: "DM Sans", sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.save-rating-button:hover {
+    background: var(--navy-light);
+}
+
+
+/* ========================================
+   RATING BESKED
+======================================== */
+
+.rating-saved-message {
+    margin-top: 15px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+
+/* ========================================
+   MOBIL
+======================================== */
+
+@media (max-width: 600px) {
+
+    .recipe-actions {
+        flex-direction: column;
+    }
+
+    .make-recipe-button,
+    .rate-recipe-button {
+        width: 100%;
+    }
+
+}
+/* ========================================
+   SKRIFT
+======================================== */
+
+.opskrift-page,
+.opskrift-page * {
+    font-family: "DM Sans", sans-serif;
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Favoritter · SKAB.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#172a46">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<meta name="apple-mobile-web-app-title" content="SKAB.">
+    <link rel="stylesheet" href="favoritter.css">
+</head>
+
+<body>
+
+    <main class="favoritter-page">
+
+        <header class="site-header">
+
+            <a href="index.html" class="logo">
+                SKAB<span>.</span>
+            </a>
+
+            <nav class="main-nav">
+
+                <a href="skab.html">
+                    Mit skab
+                </a>
+
+                <a href="opskrifter.html">
+                    Opskrifter
+                </a>
+
+                <a href="favoritter.html" class="active">
+                    Favoritter
+                </a>
+
+            </nav>
+
+        </header>
+
+
+        <section class="page-intro">
+
+            <div>
+
+                <p class="eyebrow">
+                    FAVORITTER
+                </p>
+
+                <h1>
+                    Det du<br>
+                    gerne vil lave igen.
+                </h1>
+
+            </div>
+
+            <p class="intro-description">
+                Dine vurderede opskrifter,
+                samlet ét sted.
+            </p>
+
+        </section>
+
+
+        <section class="favorites">
+
+            <div class="favorites-header">
+
+                <div>
+
+                    <p class="small-label">
+                        DINE OPSKRIFTER
+                    </p>
+
+                    <h2>
+                        Favoritter
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="favoritesList"
+                class="favorites-list"
+            >
+                <!-- JavaScript indsætter vurderede opskrifter her -->
+            </div>
+
+        </section>
+
+
+        <footer class="page-footer">
+
+            <span>
+                BRUG DET, FØR DU KØBER NYT.
+            </span>
+
+            <span>
+                SKAB. © 2026
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <script src="opskrifter.js"></script>
+    <script src="favoritter.js"></script>
+
+</body>
+
+</html>
