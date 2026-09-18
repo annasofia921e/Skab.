@@ -1714,7 +1714,7 @@ if (
                     processedImage
                  );
 
-                const cleanedLines =
+                   const cleanedLines =
                     cleanReceiptText(result.data.text);
 
                 const receiptText =
