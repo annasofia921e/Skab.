@@ -1083,40 +1083,81 @@ if (scanReceiptBtn && receiptInput) {
 
             try {
 
-                console.log("Starter OCR...");
+                if (
+                    typeof Tesseract === "undefined"
+                ) {
+                    throw new Error(
+                        "Tesseract blev ikke indlæst."
+                    );
+                }
+
+                console.log(
+                    "Tesseract er indlæst."
+                );
 
                 const worker =
-                    await Tesseract.createWorker("eng");
+                    await Tesseract.createWorker(
+                        "eng",
+                        1,
+                        {
+                            workerPath:
+                                "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/worker.min.js",
 
-                console.log("OCR-worker klar.");
+                            corePath:
+                                "https://cdn.jsdelivr.net/npm/tesseract.js-core@5.0.0",
+
+                            logger:
+                                function (message) {
+                                    console.log(
+                                        "OCR:",
+                                        message
+                                    );
+                                }
+                        }
+                    );
+
+                console.log(
+                    "OCR-worker er klar."
+                );
 
                 const result =
-                    await worker.recognize(receipt);
+                    await worker.recognize(
+                        receipt
+                    );
 
                 const text =
                     result.data.text;
 
                 console.log(
-                    "OCR-resultat:",
+                    "OCR RESULTAT:",
                     text
                 );
 
                 await worker.terminate();
 
-                alert(
-                    "Tekst fundet på kvitteringen:\n\n" +
-                    text
-                );
+                if (!text.trim()) {
+
+                    alert(
+                        "OCR kunne ikke finde nogen tekst på billedet."
+                    );
+
+                } else {
+
+                    alert(
+                        "Tekst fundet:\n\n" +
+                        text
+                    );
+                }
 
             } catch (error) {
 
                 console.error(
-                    "OCR-fejl:",
+                    "OCR FEJL:",
                     error
                 );
 
                 alert(
-                    "OCR kunne ikke læse kvitteringen.\n\n" +
+                    "Der opstod en OCR-fejl:\n\n" +
                     error.message
                 );
 
