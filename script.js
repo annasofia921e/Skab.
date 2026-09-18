@@ -1676,7 +1676,7 @@ if (
 
                 const worker =
                     await Tesseract.createWorker(
-                        "eng",
+                        "dan",
                         1,
                         {
 
