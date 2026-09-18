@@ -1047,3 +1047,43 @@ if ("serviceWorker" in navigator) {
     );
 
 }
+/* ========================================
+   SKAB. — KVITTERING
+======================================== */
+
+const scanReceiptBtn =
+    document.getElementById("scanReceiptBtn");
+
+const receiptInput =
+    document.getElementById("receiptInput");
+
+if (scanReceiptBtn && receiptInput) {
+
+    scanReceiptBtn.addEventListener(
+        "click",
+        function () {
+            receiptInput.click();
+        }
+    );
+
+    receiptInput.addEventListener(
+        "change",
+        function () {
+
+            if (receiptInput.files.length > 0) {
+
+                const receipt =
+                    receiptInput.files[0];
+
+                console.log(
+                    "Kvittering valgt:",
+                    receipt.name
+                );
+
+                alert(
+                    "Kvitteringen er valgt. OCR kommer i næste trin."
+                );
+            }
+        }
+    );
+}

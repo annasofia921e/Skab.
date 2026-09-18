@@ -97,18 +97,27 @@
                 </div>
 
 
-                <button
-                    id="addIngredientBtn"
-                    class="add-button"
-                    type="button"
-                >
+                <div class="pantry-actions">
 
-                    <span>+</span>
+    <button id="scanReceiptBtn" class="receipt-button" type="button">
+        <span>▣</span>
+        Tilføj fra kvittering
+    </button>
 
-                    Tilføj ingrediens
+    <button id="addIngredientBtn" class="add-button" type="button">
+        <span>+</span>
+        Tilføj ingrediens
+    </button>
 
-                </button>
+</div>
 
+<input
+    type="file"
+    id="receiptInput"
+    accept="image/*"
+    capture="environment"
+    hidden
+>
             </div>
 
 

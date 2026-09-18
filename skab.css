@@ -1319,3 +1319,47 @@
 .ingredient-actions .generated-delete {
     margin: 0;
 }
+.pantry-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.receipt-button {
+    border: 1px solid var(--navy);
+    background: transparent;
+    color: var(--navy);
+    padding: 13px 20px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.receipt-button span {
+    margin-right: 8px;
+    font-size: 12px;
+}
+
+.receipt-button:hover {
+    background: var(--navy);
+    color: white;
+}
+
+@media (max-width: 600px) {
+
+    .pantry-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .receipt-button,
+    .add-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
