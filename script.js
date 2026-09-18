@@ -1710,9 +1710,9 @@ if (
                  */
 
                 const result =
-                    await worker.recognize(
-                        processedImage
-                    );
+                      await worker.recognize(
+                          processedImage
+                );
 
                 const text =
                     result.data.text || "";
