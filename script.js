@@ -1048,7 +1048,7 @@ if ("serviceWorker" in navigator) {
 
 }
 /* ========================================
-   SKAB. — KVITTERING
+   SKAB. — KVITTERINGS OCR
 ======================================== */
 
 const scanReceiptBtn =
@@ -1068,21 +1068,64 @@ if (scanReceiptBtn && receiptInput) {
 
     receiptInput.addEventListener(
         "change",
-        function () {
+        async function () {
 
-            if (receiptInput.files.length > 0) {
+            if (!receiptInput.files.length) {
+                return;
+            }
 
-                const receipt =
-                    receiptInput.files[0];
+            const receipt =
+                receiptInput.files[0];
+
+            scanReceiptBtn.disabled = true;
+            scanReceiptBtn.innerHTML =
+                "Læser kvittering...";
+
+            try {
+
+                const result =
+                    await Tesseract.recognize(
+                        receipt,
+                        "dan",
+                        {
+                            logger: function (info) {
+                                console.log(info);
+                            }
+                        }
+                    );
+
+                const text =
+                    result.data.text;
 
                 console.log(
-                    "Kvittering valgt:",
-                    receipt.name
+                    "OCR-resultat:",
+                    text
                 );
 
                 alert(
-                    "Kvitteringen er valgt. OCR kommer i næste trin."
+                    "Kvitteringen er læst!\n\n" +
+                    text
                 );
+
+            } catch (error) {
+
+                console.error(
+                    "OCR-fejl:",
+                    error
+                );
+
+                alert(
+                    "Der opstod en fejl, da kvitteringen skulle læses."
+                );
+
+            } finally {
+
+                scanReceiptBtn.disabled = false;
+
+                scanReceiptBtn.innerHTML =
+                    "<span>▣</span> Tilføj fra kvittering";
+
+                receiptInput.value = "";
             }
         }
     );
