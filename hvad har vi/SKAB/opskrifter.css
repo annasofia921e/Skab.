@@ -1,0 +1,647 @@
+/* ========================================
+   SKAB. — OPSKRIFTER
+======================================== */
+
+
+/* ----------------------------------------
+   FARVER
+---------------------------------------- */
+
+:root {
+
+    --background: #C7CED1;
+
+    --text: #0a0a0a;
+
+    --muted: #777b71;
+
+    --navy: #172a46;
+
+    --navy-light: #29415f;
+
+    --line: #d7d6ce;
+
+}
+
+
+/* ----------------------------------------
+   GRUNDLÆGGENDE
+---------------------------------------- */
+
+.opskrifter-page {
+
+    min-height: 100vh;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    padding: 30px 6% 45px;
+
+    font-family: "DM Sans", sans-serif;
+
+}
+
+
+/* ----------------------------------------
+   HEADER
+---------------------------------------- */
+
+.site-header {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid var(--line);
+
+}
+
+
+.logo {
+
+    text-decoration: none;
+
+    color: var(--text);
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    letter-spacing: -1px;
+
+}
+
+.logo span {
+
+    color: var(--navy);
+
+}
+
+
+.main-nav {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 38px;
+
+}
+
+
+.main-nav a {
+
+    position: relative;
+
+    text-decoration: none;
+
+    color: var(--text);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+}
+
+
+.main-nav a.active {
+
+    color: var(--navy);
+
+}
+
+
+.main-nav a.active::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: -10px;
+
+    height: 1.5px;
+
+    background: var(--navy);
+
+}
+
+
+/* ----------------------------------------
+   INTRO
+---------------------------------------- */
+
+.page-intro {
+
+    width: 100%;
+
+    max-width: 1200px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    padding: 85px 0 70px;
+
+}
+
+
+.eyebrow {
+
+    margin: 0 0 25px;
+
+    color: var(--navy);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+}
+
+
+.page-intro h1 {
+
+    margin: 0;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: clamp(55px, 8vw, 110px);
+
+    font-weight: 500;
+
+    line-height: 0.88;
+
+    letter-spacing: -5px;
+
+}
+
+
+.intro-description {
+
+    width: 260px;
+
+    margin: 0 0 4px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.65;
+
+}
+
+
+/* ----------------------------------------
+   OPSKRIFTER
+---------------------------------------- */
+
+.recipes {
+
+    width: 100%;
+
+    max-width: 1200px;
+
+}
+
+
+.recipes-header {
+
+    padding-bottom: 15px;
+
+    border-bottom: 1px solid var(--line);
+
+}
+
+
+.small-label {
+
+    margin: 0 0 7px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+}
+
+
+.recipes-header h2 {
+
+    margin: 0;
+
+    font-size: 26px;
+
+    font-weight: 500;
+
+    letter-spacing: -1px;
+
+}
+
+
+/* ----------------------------------------
+   OPSKRIFTS-GRID
+---------------------------------------- */
+
+.recipe-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 1px;
+
+    margin-top: 35px;
+
+    background: var(--line);
+
+    border: 1px solid var(--line);
+
+}
+
+
+/* ----------------------------------------
+   OPSKRIFTSKORT
+---------------------------------------- */
+
+.recipe-card {
+
+    min-height: 320px;
+
+    padding: 30px;
+
+    background: var(--background);
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    text-decoration: none;
+
+    color: var(--text);
+
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+
+}
+
+
+.recipe-card:hover {
+
+    background: #d0d6d8;
+
+}
+
+
+.recipe-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+}
+
+
+.recipe-category {
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+    text-transform: uppercase;
+
+}
+
+
+.recipe-arrow {
+
+    color: var(--navy);
+
+    font-size: 24px;
+
+    transition: transform 0.3s ease;
+
+}
+
+
+.recipe-card:hover .recipe-arrow {
+
+    transform: translate(5px, -5px);
+
+}
+
+
+/* ----------------------------------------
+   OPSKRIFTSTEKST
+---------------------------------------- */
+
+.recipe-content {
+
+    max-width: 480px;
+
+}
+
+
+.recipe-content h3 {
+
+    margin: 0 0 12px;
+
+    font-size: 30px;
+
+    font-weight: 500;
+
+    line-height: 1;
+
+    letter-spacing: -1.5px;
+
+}
+
+
+.recipe-content p {
+
+    margin: 0;
+
+    max-width: 400px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+}
+
+
+/* ----------------------------------------
+   INFO
+---------------------------------------- */
+
+.recipe-info {
+
+    display: flex;
+
+    gap: 25px;
+
+    margin-top: 25px;
+
+}
+
+
+.recipe-info span {
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+
+}
+
+
+/* ----------------------------------------
+   FOOTER
+---------------------------------------- */
+
+.page-footer {
+
+    width: 100%;
+
+    max-width: 1200px;
+
+    margin-top: 90px;
+
+    padding-top: 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    border-top: 1px solid var(--line);
+
+}
+
+
+.page-footer span {
+
+    color: #969990;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+}
+
+
+/* ----------------------------------------
+   TABLET
+---------------------------------------- */
+
+@media (max-width: 900px) {
+
+    .page-intro {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 30px;
+
+    }
+
+}
+
+
+/* ----------------------------------------
+   MOBIL
+---------------------------------------- */
+
+@media (max-width: 600px) {
+
+    .opskrifter-page {
+
+        padding: 22px 7% 30px;
+
+    }
+
+
+    .site-header {
+
+        padding-bottom: 17px;
+
+    }
+
+
+    .logo {
+
+        font-size: 22px;
+
+    }
+
+
+    .main-nav {
+
+        gap: 15px;
+
+    }
+
+
+    .main-nav a {
+
+        font-size: 7px;
+
+        letter-spacing: 1px;
+
+    }
+
+
+    .main-nav a.active::after {
+
+        bottom: -8px;
+
+    }
+
+
+    .page-intro {
+
+        padding: 65px 0 55px;
+
+    }
+
+
+    .eyebrow {
+
+        font-size: 8px;
+
+        letter-spacing: 2.5px;
+
+        margin-bottom: 20px;
+
+    }
+
+
+    .page-intro h1 {
+
+        font-size: 52px;
+
+        line-height: 0.92;
+
+        letter-spacing: -3px;
+
+    }
+
+
+    .intro-description {
+
+        max-width: 330px;
+
+        font-size: 11px;
+
+    }
+
+
+    .recipe-grid {
+
+        grid-template-columns: 1fr;
+
+        margin-top: 25px;
+
+    }
+
+
+    .recipe-card {
+
+        min-height: 260px;
+
+        padding: 24px;
+
+    }
+
+
+    .recipe-content h3 {
+
+        font-size: 25px;
+
+    }
+
+
+    .page-footer {
+
+        margin-top: 65px;
+
+    }
+
+
+    .page-footer span {
+
+        font-size: 7px;
+
+    }
+
+
+    .page-footer span:last-child {
+
+        display: none;
+
+    }
+
+}
+/* ========================================
+   OPSKRIFT MATCH PREVIEW
+======================================== */
+
+.recipe-match-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+
+.recipe-match-preview strong {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--navy);
+}
+
+.recipe-match-preview span {
+    font-size: 9px;
+    color: var(--muted);
+}

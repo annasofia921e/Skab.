@@ -1,0 +1,1321 @@
+/* ========================================
+   SKAB. — MIT SKAB
+   Samme design som forsiden
+======================================== */
+
+
+/* ----------------------------------------
+   FARVER
+---------------------------------------- */
+
+:root {
+    --background: #C7CED1;
+    --text: #0a0a0a;
+    --muted: #777b71;
+
+    /* NAVY – din nye temafarve */
+    --navy: #172a46;
+    --navy-light: #29415f;
+
+    --line: #d7d6ce;
+    --danger: #8a5047;
+}
+
+
+/* ----------------------------------------
+   GRUNDLÆGGENDE
+---------------------------------------- */
+
+.skab-page {
+    min-height: 100vh;
+
+    background: var(--background);
+    color: var(--text);
+
+    padding: 30px 6% 45px;
+
+    font-family: "DM Sans", sans-serif;
+}
+
+
+/* ----------------------------------------
+   HEADER
+---------------------------------------- */
+
+.site-header {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid var(--line);
+}
+
+
+/* LOGO */
+
+.logo {
+    text-decoration: none;
+
+    color: var(--text);
+
+    font-size: 24px;
+    font-weight: 700;
+
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--navy);
+}
+
+
+/* NAVIGATION */
+
+.main-nav {
+    display: flex;
+    align-items: center;
+
+    gap: 38px;
+}
+
+.main-nav a {
+    position: relative;
+
+    text-decoration: none;
+
+    color: var(--text);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    transition: color 0.25s ease;
+}
+
+.main-nav a:hover {
+    color: var(--text);
+}
+
+
+/* AKTIV SIDE */
+
+.main-nav a.active {
+    color: var(--navy);
+}
+
+.main-nav a.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: -10px;
+
+    height: 1.5px;
+
+    background: var(--navy);
+}
+
+
+/* ----------------------------------------
+   INTRO
+---------------------------------------- */
+
+.page-intro {
+    width: 100%;
+    max-width: 1200px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    padding: 85px 0 70px;
+}
+
+
+/* EYEBROW
+   Samme størrelse som forsiden
+*/
+
+.eyebrow {
+    margin: 0 0 25px;
+
+    color: var(--navy);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+}
+
+
+/* OVERSKRIFT
+   DM Sans – samme familie som forsiden
+*/
+
+.page-intro h1 {
+    margin: 0;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: clamp(55px, 8vw, 110px);
+
+    font-weight: 500;
+
+    line-height: 0.88;
+
+    letter-spacing: -5px;
+
+    color: #20271f;
+}
+
+
+/* BESKRIVELSE */
+
+.intro-description {
+    width: 260px;
+
+    margin: 0 0 4px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.65;
+}
+
+
+/* ----------------------------------------
+   PANTRY
+---------------------------------------- */
+
+.pantry {
+    width: 100%;
+    max-width: 1200px;
+}
+
+
+/* ----------------------------------------
+   PANTRY HEADER
+---------------------------------------- */
+
+.pantry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    padding-bottom: 15px;
+
+    border-bottom: 1px solid var(--line);
+}
+
+
+/* LILLE LABEL */
+
+.small-label {
+    margin: 0 0 7px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+/* INGREDIENSER */
+
+.pantry-header h2 {
+    margin: 0;
+
+    font-size: 26px;
+
+    font-weight: 500;
+
+    line-height: 1;
+
+    letter-spacing: -1px;
+}
+
+
+/* ----------------------------------------
+   TILFØJ KNAP
+---------------------------------------- */
+
+.add-button {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    border: none;
+
+    padding: 13px 20px;
+
+    background: var(--navy);
+
+    color: #f3f1e9;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.add-button span {
+    font-size: 17px;
+
+    font-weight: 400;
+
+    line-height: 10px;
+}
+
+.add-button:hover {
+    background: var(--navy-light);
+
+    transform: translateY(-1px);
+}
+
+
+/* ----------------------------------------
+   INGREDIENS-GRUPPER
+---------------------------------------- */
+
+.ingredient-group {
+    margin-top: 55px;
+}
+
+
+/* GRUPPE HEADER */
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    padding-bottom: 13px;
+}
+
+.group-header h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+.group-count {
+    color: var(--muted);
+
+    font-size: 9px;
+}
+
+
+/* ----------------------------------------
+   INGREDIENS LISTE
+---------------------------------------- */
+
+.ingredient-list {
+    border-top: 1px solid var(--line);
+}
+
+
+/* ENKELT INGREDIENS */
+
+.ingredient-item {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: 1fr 200px 30px;
+
+    align-items: center;
+
+    min-height: 92px;
+
+    border-bottom: 1px solid var(--line);
+
+    transition:
+        padding-left 0.3s ease,
+        background-color 0.3s ease;
+}
+
+
+/* HOVER */
+
+.ingredient-item:hover {
+    padding-left: 12px;
+}
+
+
+/* ----------------------------------------
+   NAVN
+---------------------------------------- */
+
+.ingredient-name h4 {
+    margin: 0 0 5px;
+
+    color: var(--text);
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+    line-height: 1;
+
+    letter-spacing: -0.5px;
+}
+
+.ingredient-name p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* ----------------------------------------
+   UDLØBSDATO
+---------------------------------------- */
+
+.ingredient-expiry {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.ingredient-expiry span {
+    color: var(--muted);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+.ingredient-expiry strong {
+    color: var(--text);
+
+    font-size: 11px;
+
+    font-weight: 500;
+}
+
+
+/* SNART UDLØBET */
+
+.ingredient-item.urgent
+.ingredient-expiry strong {
+    color: var(--danger);
+}
+
+
+/* ----------------------------------------
+   SLET
+---------------------------------------- */
+
+.delete-button {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    background: transparent;
+
+    color: #969990;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 21px;
+    font-weight: 300;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.delete-button:hover {
+    color: var(--danger);
+
+    background: #e8e5dc;
+}
+
+
+/* ----------------------------------------
+   FOOTER
+---------------------------------------- */
+
+.page-footer {
+    width: 100%;
+    max-width: 1200px;
+
+    margin-top: 90px;
+
+    padding-top: 20px;
+
+    display: flex;
+    justify-content: space-between;
+
+    border-top: 1px solid var(--line);
+}
+
+.page-footer span {
+    color: #969990;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+
+    .page-intro {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 30px;
+    }
+
+    .intro-description {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .ingredient-item {
+        grid-template-columns: 1fr 160px 30px;
+    }
+}
+
+
+/* ========================================
+   MOBIL
+======================================== */
+
+@media (max-width: 600px) {
+
+    .skab-page {
+        padding: 22px 7% 30px;
+    }
+
+
+    /* HEADER */
+
+    .site-header {
+        padding-bottom: 17px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .main-nav {
+        gap: 15px;
+    }
+
+    .main-nav a {
+        font-size: 7px;
+
+        letter-spacing: 1px;
+    }
+
+    .main-nav a.active::after {
+        bottom: -8px;
+    }
+
+
+    /* INTRO */
+
+    .page-intro {
+        padding: 65px 0 55px;
+    }
+
+    .eyebrow {
+        font-size: 8px;
+
+        letter-spacing: 2.5px;
+
+        margin-bottom: 20px;
+    }
+
+    .page-intro h1 {
+        font-size: 52px;
+
+        line-height: 0.92;
+
+        letter-spacing: -3px;
+    }
+
+    .intro-description {
+        max-width: 330px;
+
+        font-size: 11px;
+    }
+
+
+    /* PANTRY HEADER */
+
+    .pantry-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 20px;
+    }
+
+    .pantry-header h2 {
+        font-size: 24px;
+    }
+
+    .add-button {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    /* GROUP */
+
+    .ingredient-group {
+        margin-top: 45px;
+    }
+
+
+    /* INGREDIENT */
+
+    .ingredient-item {
+        grid-template-columns: 1fr 105px 25px;
+
+        min-height: 82px;
+    }
+
+    .ingredient-item:hover {
+        padding-left: 0;
+    }
+
+
+    /* NAME */
+
+    .ingredient-name h4 {
+        font-size: 16px;
+    }
+
+    .ingredient-name p {
+        font-size: 10px;
+    }
+
+
+    /* EXPIRY */
+
+    .ingredient-expiry {
+        gap: 3px;
+    }
+
+    .ingredient-expiry span {
+        font-size: 7px;
+
+        letter-spacing: 1px;
+    }
+
+    .ingredient-expiry strong {
+        font-size: 10px;
+    }
+
+
+    /* FOOTER */
+
+    .page-footer {
+        margin-top: 65px;
+    }
+
+    .page-footer span {
+        font-size: 7px;
+    }
+
+    .page-footer span:last-child {
+        display: none;
+    }
+}
+/* ========================================
+   TILFØJ INGREDIENS
+======================================== */
+
+
+/* FORMULAR */
+
+.ingredient-form {
+    margin-top: 25px;
+
+    padding: 28px;
+
+    background: #ebe9e0;
+
+    border: 1px solid var(--line);
+
+    animation: formAppear 0.25s ease;
+}
+
+
+/* SKJULT */
+
+.ingredient-form.hidden {
+    display: none;
+}
+
+
+/* FORM HEADER */
+
+.form-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    margin-bottom: 30px;
+}
+
+.form-header h3 {
+    margin: 0;
+
+    font-size: 21px;
+
+    font-weight: 500;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* LUK */
+
+.close-form {
+    width: 30px;
+    height: 30px;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    font-size: 24px;
+
+    font-weight: 300;
+
+    cursor: pointer;
+}
+
+.close-form:hover {
+    color: var(--navy);
+}
+
+
+/* FORM FELTER */
+
+.form-fields {
+    display: grid;
+
+    grid-template-columns: 1.5fr 1fr 1fr auto;
+
+    gap: 18px;
+
+    align-items: end;
+}
+
+
+/* FELT */
+
+.form-field {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.form-field label {
+    color: var(--muted);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+
+/* INPUT */
+
+.form-field input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    height: 45px;
+
+    padding: 0 13px;
+
+    border: 1px solid #cfcec6;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 12px;
+
+    outline: none;
+
+    transition: border-color 0.2s ease;
+}
+
+.form-field input:focus {
+    border-color: var(--navy);
+}
+
+
+/* TILFØJ KNAP */
+
+.save-ingredient {
+    height: 45px;
+
+    padding: 0 20px;
+
+    border: none;
+
+    background: var(--navy);
+
+    color: var(--background);
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.save-ingredient:hover {
+    background: var(--navy-light);
+}
+
+
+/* ----------------------------------------
+   INGREDIENSER FRA JAVASCRIPT
+---------------------------------------- */
+
+.ingredient-group {
+    margin-top: 55px;
+}
+
+
+/* GRUPPE */
+
+.generated-group {
+    margin-top: 55px;
+}
+
+
+/* GRUPPE HEADER */
+
+.generated-group-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: baseline;
+
+    padding-bottom: 13px;
+}
+
+.generated-group-header h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+.generated-group-header span {
+    color: var(--muted);
+
+    font-size: 9px;
+}
+
+
+/* INGREDIENS */
+
+.generated-ingredient {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: 1fr 200px 30px;
+
+    align-items: center;
+
+    min-height: 92px;
+
+    border-top: 1px solid var(--line);
+
+    transition: padding-left 0.3s ease;
+}
+
+.generated-ingredient:last-child {
+    border-bottom: 1px solid var(--line);
+}
+
+.generated-ingredient:hover {
+    padding-left: 12px;
+}
+
+
+/* NAVN */
+
+.generated-name h4 {
+    margin: 0 0 5px;
+
+    color: var(--text);
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+    line-height: 1;
+
+    letter-spacing: -0.5px;
+}
+
+.generated-name p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* UDLØB */
+
+.generated-expiry {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.generated-expiry span {
+    color: var(--muted);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+.generated-expiry strong {
+    color: var(--text);
+
+    font-size: 11px;
+
+    font-weight: 500;
+}
+
+
+/* UDLØBER SNART */
+
+.generated-ingredient.urgent
+.generated-expiry strong {
+    color: var(--danger);
+}
+
+
+/* SLET */
+
+.generated-delete {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    background: transparent;
+
+    color: #969990;
+
+    font-size: 21px;
+
+    font-weight: 300;
+
+    cursor: pointer;
+}
+
+.generated-delete:hover {
+    color: var(--danger);
+
+    background: #e8e5dc;
+}
+
+
+/* ----------------------------------------
+   ANIMATION
+---------------------------------------- */
+
+@keyframes formAppear {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ========================================
+   MOBIL FORMULAR
+======================================== */
+
+@media (max-width: 800px) {
+
+    .form-fields {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .save-ingredient {
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .ingredient-form {
+        padding: 22px;
+    }
+
+    .form-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .generated-ingredient {
+        grid-template-columns: 1fr 105px 25px;
+
+        min-height: 82px;
+    }
+
+    .generated-ingredient:hover {
+        padding-left: 0;
+    }
+
+    .generated-name h4 {
+        font-size: 16px;
+    }
+
+    .generated-name p {
+        font-size: 10px;
+    }
+
+    .generated-expiry span {
+        font-size: 7px;
+    }
+
+    .generated-expiry strong {
+        font-size: 10px;
+    }
+
+}
+.quantity-input {
+    display: grid;
+    grid-template-columns: 1fr 80px;
+    gap: 8px;
+}
+
+.quantity-input input,
+.quantity-input select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.quantity-input select {
+    appearance: none;
+    background: #f3f1e9;
+    border: 1px solid var(--line);
+    padding: 13px 10px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.quantity-input select:focus,
+.quantity-input input:focus {
+    outline: none;
+    border-color: var(--navy);
+}
+/* ========================================
+   REDIGER INGREDIENS
+======================================== */
+
+.edit-button {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    padding: 8px 10px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.edit-button:hover {
+    color: var(--navy);
+}
+
+
+/* ========================================
+   REDIGERINGSFELT
+======================================== */
+
+.generated-ingredient.editing {
+    display: block;
+    padding: 25px 0;
+}
+
+
+.edit-form {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 18px;
+    align-items: end;
+}
+
+
+.edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+
+.edit-field label {
+    color: var(--muted);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+
+.edit-field input,
+.edit-field select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--line);
+    background: #f3f1e9;
+    padding: 12px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    color: var(--text);
+}
+
+
+.edit-field input:focus,
+.edit-field select:focus {
+    outline: none;
+    border-color: var(--navy);
+}
+
+
+/* ========================================
+   MÆNGDE + ENHED
+======================================== */
+
+.edit-quantity {
+    display: grid;
+    grid-template-columns: 1fr 70px;
+    gap: 7px;
+}
+
+
+.edit-quantity input,
+.edit-quantity select {
+    width: 100%;
+}
+
+
+/* ========================================
+   GEM / ANNULLER
+======================================== */
+
+.edit-actions {
+    display: flex;
+    gap: 8px;
+}
+
+
+.save-edit-button,
+.cancel-edit-button {
+    border: none;
+    padding: 12px 14px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+
+.save-edit-button {
+    background: var(--navy);
+    color: #f3f1e9;
+}
+
+
+.save-edit-button:hover {
+    background: var(--navy-light);
+}
+
+
+.cancel-edit-button {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+}
+
+
+.cancel-edit-button:hover {
+    border-color: var(--navy);
+}
+
+
+/* ========================================
+   RESPONSIVT
+======================================== */
+
+@media (max-width: 900px) {
+
+    .edit-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .edit-actions {
+        grid-column: 1 / -1;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .edit-form {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-actions {
+        grid-column: auto;
+    }
+
+    .edit-quantity {
+        grid-template-columns: 1fr 80px;
+    }
+
+}
+/* ========================================
+   INGREDIENS HANDLINGER
+======================================== */
+
+.ingredient-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.ingredient-actions .edit-button {
+    margin: 0;
+}
+
+.ingredient-actions .generated-delete {
+    margin: 0;
+}
