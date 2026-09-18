@@ -1,5 +1,11 @@
 /* ========================================
+   SKAB.
    MIT SKAB
+======================================== */
+
+
+/* ========================================
+   DOM-ELEMENTER
 ======================================== */
 
 const addIngredientBtn =
@@ -30,9 +36,12 @@ if (addIngredientBtn) {
 
             ingredientForm.classList.remove("hidden");
 
-            document
-                .getElementById("ingredientName")
-                .focus();
+            const nameInput =
+                document.getElementById("ingredientName");
+
+            if (nameInput) {
+                nameInput.focus();
+            }
 
         }
     );
@@ -69,6 +78,20 @@ let ingredients =
 
 
 /* ========================================
+   GEM INGREDIENSER
+======================================== */
+
+function saveIngredients() {
+
+    localStorage.setItem(
+        "skabIngredients",
+        JSON.stringify(ingredients)
+    );
+
+}
+
+
+/* ========================================
    TILFØJ NY INGREDIENS
 ======================================== */
 
@@ -80,28 +103,30 @@ if (newIngredientForm) {
 
             event.preventDefault();
 
+            const nameInput =
+                document.getElementById("ingredientName");
+
+            const quantityInput =
+                document.getElementById("ingredientQuantity");
+
+            const unitInput =
+                document.getElementById("ingredientUnit");
+
+            const expiryInput =
+                document.getElementById("ingredientExpiry");
+
+
             const name =
-                document
-                    .getElementById("ingredientName")
-                    .value
-                    .trim();
+                nameInput.value.trim();
 
             const quantity =
-                Number(
-                    document
-                        .getElementById("ingredientQuantity")
-                        .value
-                );
+                Number(quantityInput.value);
 
             const unit =
-                document
-                    .getElementById("ingredientUnit")
-                    .value;
+                unitInput.value;
 
             const expiry =
-                document
-                    .getElementById("ingredientExpiry")
-                    .value;
+                expiryInput.value;
 
 
             if (
@@ -152,26 +177,14 @@ if (newIngredientForm) {
 
 
 /* ========================================
-   GEM INGREDIENSER
-======================================== */
-
-function saveIngredients() {
-
-    localStorage.setItem(
-        "skabIngredients",
-        JSON.stringify(ingredients)
-    );
-
-}
-
-
-/* ========================================
    VIS INGREDIENSER
 ======================================== */
 
 function renderIngredients() {
 
-    if (!ingredientList) return;
+    if (!ingredientList) {
+        return;
+    }
 
 
     ingredientList.innerHTML = "";
@@ -180,7 +193,6 @@ function renderIngredients() {
     if (ingredients.length === 0) {
 
         ingredientList.innerHTML = `
-
             <div class="empty-state">
 
                 <p>
@@ -192,11 +204,9 @@ function renderIngredients() {
                 </span>
 
             </div>
-
         `;
 
         return;
-
     }
 
 
@@ -212,8 +222,7 @@ function renderIngredients() {
     );
 
 
-    const today =
-        new Date();
+    const today = new Date();
 
     today.setHours(
         0,
@@ -223,8 +232,7 @@ function renderIngredients() {
     );
 
 
-    const soon =
-        new Date();
+    const soon = new Date();
 
     soon.setDate(
         today.getDate() + 7
@@ -308,7 +316,6 @@ function createIngredientGroup(
 
 
     group.innerHTML = `
-
         <div class="generated-group-header">
 
             <h3>
@@ -317,13 +324,14 @@ function createIngredientGroup(
 
             <span>
                 ${items.length}
-                ${items.length === 1
-                    ? "ingrediens"
-                    : "ingredienser"}
+                ${
+                    items.length === 1
+                        ? "ingrediens"
+                        : "ingredienser"
+                }
             </span>
 
         </div>
-
     `;
 
 
@@ -396,15 +404,14 @@ function createIngredientElement(
 
 
     item.innerHTML = `
-
         <div class="generated-name">
 
             <h4>
-                ${ingredient.name}
+                ${escapeHTML(ingredient.name)}
             </h4>
 
             <p>
-                ${quantityText}
+                ${escapeHTML(quantityText)}
             </p>
 
         </div>
@@ -437,13 +444,12 @@ function createIngredientElement(
             <button
                 class="generated-delete"
                 type="button"
-                aria-label="Slet ${ingredient.name}"
+                aria-label="Slet ${escapeHTML(ingredient.name)}"
             >
                 ×
             </button>
 
         </div>
-
     `;
 
 
@@ -453,17 +459,21 @@ function createIngredientElement(
         item.querySelector(".edit-button");
 
 
-    editButton.addEventListener(
-        "click",
-        function () {
+    if (editButton) {
 
-            createEditForm(
-                item,
-                ingredient
-            );
+        editButton.addEventListener(
+            "click",
+            function () {
 
-        }
-    );
+                createEditForm(
+                    item,
+                    ingredient
+                );
+
+            }
+        );
+
+    }
 
 
     /* Slet */
@@ -474,16 +484,20 @@ function createIngredientElement(
         );
 
 
-    deleteButton.addEventListener(
-        "click",
-        function () {
+    if (deleteButton) {
 
-            deleteIngredient(
-                ingredient.id
-            );
+        deleteButton.addEventListener(
+            "click",
+            function () {
 
-        }
-    );
+                deleteIngredient(
+                    ingredient.id
+                );
+
+            }
+        );
+
+    }
 
 
     return item;
@@ -504,7 +518,6 @@ function createEditForm(
 
 
     item.innerHTML = `
-
         <div class="edit-form">
 
             <div class="edit-field">
@@ -516,7 +529,7 @@ function createEditForm(
                 <input
                     type="text"
                     class="edit-name"
-                    value="${ingredient.name}"
+                    value="${escapeHTML(ingredient.name)}"
                 >
 
             </div>
@@ -605,7 +618,6 @@ function createEditForm(
             </div>
 
         </div>
-
     `;
 
 
@@ -613,8 +625,12 @@ function createEditForm(
         item.querySelector(".edit-unit");
 
 
-    unitSelect.value =
-        ingredient.unit;
+    if (unitSelect) {
+
+        unitSelect.value =
+            ingredient.unit;
+
+    }
 
 
     const saveButton =
@@ -623,72 +639,76 @@ function createEditForm(
         );
 
 
-    saveButton.addEventListener(
-        "click",
-        function () {
+    if (saveButton) {
 
-            const newName =
-                item
-                    .querySelector(".edit-name")
-                    .value
-                    .trim();
+        saveButton.addEventListener(
+            "click",
+            function () {
 
-
-            const newQuantity =
-                Number(
+                const newName =
                     item
-                        .querySelector(".edit-amount")
+                        .querySelector(".edit-name")
                         .value
-                );
+                        .trim();
 
 
-            const newUnit =
-                item
-                    .querySelector(".edit-unit")
-                    .value;
+                const newQuantity =
+                    Number(
+                        item
+                            .querySelector(".edit-amount")
+                            .value
+                    );
 
 
-            const newExpiry =
-                item
-                    .querySelector(".edit-expiry")
-                    .value;
+                const newUnit =
+                    item
+                        .querySelector(".edit-unit")
+                        .value;
 
 
-            if (
-                !newName ||
-                !newExpiry ||
-                isNaN(newQuantity) ||
-                newQuantity < 0
-            ) {
+                const newExpiry =
+                    item
+                        .querySelector(".edit-expiry")
+                        .value;
 
-                alert(
-                    "Udfyld venligst alle felter korrekt."
-                );
 
-                return;
+                if (
+                    !newName ||
+                    !newExpiry ||
+                    isNaN(newQuantity) ||
+                    newQuantity < 0
+                ) {
+
+                    alert(
+                        "Udfyld venligst alle felter korrekt."
+                    );
+
+                    return;
+
+                }
+
+
+                ingredient.name =
+                    newName;
+
+                ingredient.quantity =
+                    newQuantity;
+
+                ingredient.unit =
+                    newUnit;
+
+                ingredient.expiry =
+                    newExpiry;
+
+
+                saveIngredients();
+
+                renderIngredients();
 
             }
+        );
 
-
-            ingredient.name =
-                newName;
-
-            ingredient.quantity =
-                newQuantity;
-
-            ingredient.unit =
-                newUnit;
-
-            ingredient.expiry =
-                newExpiry;
-
-
-            saveIngredients();
-
-            renderIngredients();
-
-        }
-    );
+    }
 
 
     const cancelButton =
@@ -697,14 +717,18 @@ function createEditForm(
         );
 
 
-    cancelButton.addEventListener(
-        "click",
-        function () {
+    if (cancelButton) {
 
-            renderIngredients();
+        cancelButton.addEventListener(
+            "click",
+            function () {
 
-        }
-    );
+                renderIngredients();
+
+            }
+        );
+
+    }
 
 }
 
@@ -754,8 +778,11 @@ function normalizeIngredientName(name) {
         "ært": "ært",
 
         "løg": "løg",
+
         "æg": "æg",
+
         "spinat": "spinat",
+
         "broccoli": "broccoli"
 
     };
@@ -940,7 +967,23 @@ function deleteIngredient(
 
 
 /* ========================================
-   START
+   BESKYT HTML
+======================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ========================================
+   START MIT SKAB
 ======================================== */
 
 renderIngredients();
@@ -988,6 +1031,9 @@ if ("serviceWorker" in navigator) {
 /* ========================================
    KVITTERINGS OCR
 ======================================== */
+
+
+/* DOM */
 
 const scanReceiptBtn =
     document.getElementById(
@@ -1049,10 +1095,29 @@ const RECEIPT_IGNORE_WORDS = [
     "EAN",
     "BANK",
     "VISA",
-    "MASTERCARD"
+    "MASTERCARD",
+    "MAESTRO",
+    "MOBILEPAY",
+    "TRANSAKTION",
+    "TRANSAKTIONS",
+    "SALDO",
+    "CHANGE",
+    "CASH",
+    "PAYMENT",
+    "THANK",
+    "CUSTOMER",
+    "REGISTER",
+    "RECEIPT",
+    "PRICE",
+    "PRIS",
+    "STREGKODE"
 
 ];
 
+
+/* ========================================
+   SUPERMARKEDER
+======================================== */
 
 const SUPERMARKETS = [
 
@@ -1071,7 +1136,9 @@ const SUPERMARKETS = [
     "IRMA",
     "SUPERBRUGSEN",
     "BRUGSEN",
-    "BILKA"
+    "BILKA",
+    "DAGLI'BRUGSEN",
+    "DAGLI BRUGSEN"
 
 ];
 
@@ -1083,12 +1150,17 @@ const SUPERMARKETS = [
 const FOOD_WORDS = [
 
     "mælk",
+    "skummetmælk",
+    "minimælk",
+    "letmælk",
+
     "skyr",
     "yoghurt",
     "yogurt",
     "fløde",
     "smør",
     "æg",
+
     "ost",
 
     "havre",
@@ -1107,30 +1179,42 @@ const FOOD_WORDS = [
 
     "kartoffel",
     "kartofler",
+
     "tomat",
     "tomater",
+
     "agurk",
+
     "peberfrugt",
     "gulerod",
     "gulerødder",
+
     "løg",
     "hvidløg",
     "porre",
+
     "broccoli",
     "blomkål",
     "spinat",
     "salat",
+
     "avocado",
 
     "banan",
     "bananer",
+
     "æble",
     "æbler",
+
     "pære",
     "pærer",
+
     "appelsin",
+    "appelsiner",
+
     "citron",
     "lime",
+
     "jordbær",
     "blåbær",
     "hindbær",
@@ -1138,11 +1222,14 @@ const FOOD_WORDS = [
 
     "kylling",
     "kyllingebryst",
+
     "oksekød",
     "svinekød",
+
     "bacon",
     "skinke",
     "pølser",
+
     "laks",
     "tun",
     "fisk",
@@ -1154,17 +1241,23 @@ const FOOD_WORDS = [
     "linser",
     "majs",
     "ærter",
+
     "champignon",
     "svampe",
 
     "pesto",
     "tomatsauce",
+    "tomatsovs",
+
     "bouillon",
+
     "olie",
     "olivenolie",
     "eddike",
+
     "salt",
     "peber",
+
     "ketchup",
     "sennep",
     "mayonnaise",
@@ -1172,10 +1265,12 @@ const FOOD_WORDS = [
     "nødder",
     "mandler",
     "peanutbutter",
+
     "chokolade",
     "kakao",
 
     "juice",
+
     "kaffe",
     "te"
 
@@ -1203,6 +1298,22 @@ function removePriceFromLine(line) {
     return line
         .replace(
             /\s+\d{1,4}[.,]\d{2}\s*(?:kr|dkk)?\s*$/i,
+            ""
+        )
+        .trim();
+
+}
+
+
+/* ========================================
+   FJERN STREGKODER
+======================================== */
+
+function removeBarcode(line) {
+
+    return line
+        .replace(
+            /\b\d{8,14}\b/g,
             ""
         )
         .trim();
@@ -1246,7 +1357,9 @@ function filterReceiptText(text) {
             .map(
                 function (line) {
 
-                    return line.trim();
+                    return line
+                        .replace(/\|/g, "")
+                        .trim();
 
                 }
             )
@@ -1260,6 +1373,8 @@ function filterReceiptText(text) {
 
 
     const foodItems = [];
+
+    const seenItems = new Set();
 
 
     lines.forEach(
@@ -1327,6 +1442,47 @@ function filterReceiptText(text) {
             }
 
 
+            /* Fjern pris */
+
+            line =
+                removePriceFromLine(line);
+
+
+            /* Fjern stregkode */
+
+            line =
+                removeBarcode(line);
+
+
+            if (!line) {
+
+                return;
+
+            }
+
+
+            /* Fjern mærkelige OCR-tegn */
+
+            line =
+                line
+                    .replace(
+                        /^[^A-Za-zÆØÅæøå]+/,
+                        ""
+                    )
+                    .replace(
+                        /[^A-Za-zÆØÅæøå0-9%.,'&+\- ]+$/g,
+                        ""
+                    )
+                    .trim();
+
+
+            if (!line) {
+
+                return;
+
+            }
+
+
             /* For få bogstaver */
 
             const letters =
@@ -1345,30 +1501,38 @@ function filterReceiptText(text) {
             }
 
 
-            /* Fjern pris */
+            /* Skal ligne mad */
 
-            line =
-                removePriceFromLine(line);
-
-
-            if (!line) {
+            if (!looksLikeFood(line)) {
 
                 return;
 
             }
 
 
-            /* Madvare */
+            /* Undgå dubletter */
 
-            if (looksLikeFood(line)) {
+            const normalized =
+                normalizeIngredientName(line);
 
-                foodItems.push({
 
-                    name: line
+            if (
+                seenItems.has(normalized)
+            ) {
 
-                });
+                return;
 
             }
+
+
+            seenItems.add(normalized);
+
+
+            foodItems.push({
+
+                name: line
+
+            });
 
         }
     );
@@ -1380,7 +1544,7 @@ function filterReceiptText(text) {
 
 
 /* ========================================
-   ÅBN KAMERA
+   ÅBN KAMERA / FILVÆLGER
 ======================================== */
 
 if (
@@ -1403,6 +1567,7 @@ if (
         async function () {
 
             if (
+                !receiptInput.files ||
                 !receiptInput.files.length
             ) {
 
@@ -1425,22 +1590,26 @@ if (
 
             try {
 
+                /* Tjek Tesseract */
+
                 if (
                     typeof Tesseract ===
                     "undefined"
                 ) {
 
                     throw new Error(
-                        "Tesseract blev ikke indlæst."
+                        "Tesseract blev ikke indlæst. Tjek script-linket i skab.html."
                     );
 
                 }
 
 
                 console.log(
-                    "Tesseract er indlæst."
+                    "SKAB.: Tesseract er indlæst."
                 );
 
+
+                /* Opret OCR-worker */
 
                 const worker =
                     await Tesseract.createWorker(
@@ -1469,9 +1638,11 @@ if (
 
 
                 console.log(
-                    "OCR-worker er klar."
+                    "SKAB.: OCR-worker er klar."
                 );
 
+
+                /* Læs kvitteringen */
 
                 const result =
                     await worker.recognize(
@@ -1484,15 +1655,22 @@ if (
 
 
                 console.log(
-                    "ORIGINAL OCR:",
+                    "SKAB.: ORIGINAL OCR:",
                     text
                 );
 
 
+                /* Luk worker */
+
                 await worker.terminate();
 
 
-                if (!text.trim()) {
+                /* Ingen tekst */
+
+                if (
+                    !text ||
+                    !text.trim()
+                ) {
 
                     alert(
                         "OCR kunne ikke finde nogen tekst på kvitteringen."
@@ -1503,15 +1681,19 @@ if (
                 }
 
 
+                /* Filtrér teksten */
+
                 const foodItems =
                     filterReceiptText(text);
 
 
                 console.log(
-                    "FUNDET MAD:",
+                    "SKAB.: FUNDET MAD:",
                     foodItems
                 );
 
+
+                /* Ingen madvarer */
 
                 if (
                     foodItems.length === 0
@@ -1526,15 +1708,18 @@ if (
                 }
 
 
+                /* Vis resultatet */
+
                 showReceiptReview(
                     foodItems
                 );
 
+            }
 
-            } catch (error) {
+            catch (error) {
 
                 console.error(
-                    "OCR FEJL:",
+                    "SKAB.: OCR FEJL:",
                     error
                 );
 
@@ -1544,7 +1729,9 @@ if (
                     error.message
                 );
 
-            } finally {
+            }
+
+            finally {
 
                 scanReceiptBtn.disabled =
                     false;
@@ -1554,7 +1741,8 @@ if (
                     "<span>▣</span> Tilføj fra kvittering";
 
 
-                receiptInput.value = "";
+                receiptInput.value =
+                    "";
 
             }
 
@@ -1575,16 +1763,25 @@ function showReceiptReview(items) {
         !receiptItems
     ) {
 
+        console.error(
+            "SKAB.: receiptReview eller receiptItems blev ikke fundet i HTML."
+        );
+
+        alert(
+            "Kvitteringen blev læst, men resultatfeltet kunne ikke findes på siden."
+        );
+
         return;
 
     }
 
 
-    receiptItems.innerHTML = "";
+    receiptItems.innerHTML =
+        "";
 
 
     items.forEach(
-        function (item) {
+        function (item, index) {
 
             const row =
                 document.createElement(
@@ -1614,12 +1811,14 @@ function showReceiptReview(items) {
                     <input
                         type="text"
                         class="receipt-name"
+                        value="${escapeHTML(item.name)}"
                     >
 
                 </div>
 
 
                 <div class="receipt-item-fields">
+
 
                     <div class="receipt-field">
 
@@ -1668,7 +1867,7 @@ function showReceiptReview(items) {
                                 l
                             </option>
 
-                            <option value="stk">
+                            <option value="stk" selected>
                                 stk.
                             </option>
 
@@ -1690,15 +1889,10 @@ function showReceiptReview(items) {
 
                     </div>
 
+
                 </div>
 
             `;
-
-
-            row.querySelector(
-                ".receipt-name"
-            ).value =
-                item.name;
 
 
             receiptItems.appendChild(
@@ -1709,10 +1903,14 @@ function showReceiptReview(items) {
     );
 
 
+    /* Vis resultatet */
+
     receiptReview.classList.add(
         "visible"
     );
 
+
+    /* Scroll ned til resultatet */
 
     receiptReview.scrollIntoView({
         behavior: "smooth",
@@ -1752,94 +1950,131 @@ if (addReceiptItemsBtn) {
         "click",
         function () {
 
+            if (!receiptItems) {
+
+                return;
+
+            }
+
+
             const rows =
                 receiptItems.querySelectorAll(
                     ".receipt-item"
                 );
 
 
-            let addedCount = 0;
+            let addedCount =
+                0;
 
 
-            rows.forEach(
-                function (row) {
+            for (
+                let i = 0;
+                i < rows.length;
+                i++
+            ) {
 
-                    const checkbox =
-                        row.querySelector(
-                            ".receipt-select"
-                        );
-
-
-                    if (!checkbox.checked) {
-
-                        return;
-
-                    }
+                const row =
+                    rows[i];
 
 
-                    const name =
-                        row.querySelector(
-                            ".receipt-name"
-                        ).value.trim();
+                const checkbox =
+                    row.querySelector(
+                        ".receipt-select"
+                    );
 
 
-                    const quantity =
-                        Number(
-                            row.querySelector(
-                                ".receipt-quantity"
-                            ).value
-                        );
+                if (
+                    !checkbox ||
+                    !checkbox.checked
+                ) {
 
-
-                    const unit =
-                        row.querySelector(
-                            ".receipt-unit"
-                        ).value;
-
-
-                    const expiry =
-                        row.querySelector(
-                            ".receipt-expiry"
-                        ).value;
-
-
-                    if (
-                        !name ||
-                        !expiry ||
-                        isNaN(quantity) ||
-                        quantity <= 0
-                    ) {
-
-                        alert(
-                            "Udfyld navn, mængde og udløbsdato for alle valgte varer."
-                        );
-
-                        return;
-
-                    }
-
-
-                    ingredients.push({
-
-                        id: Date.now() +
-                            Math.random(),
-
-                        name: name,
-
-                        quantity: quantity,
-
-                        unit: unit,
-
-                        expiry: expiry
-
-                    });
-
-
-                    addedCount++;
+                    continue;
 
                 }
-            );
 
+
+                const name =
+                    row
+                        .querySelector(
+                            ".receipt-name"
+                        )
+                        .value
+                        .trim();
+
+
+                const quantity =
+                    Number(
+                        row
+                            .querySelector(
+                                ".receipt-quantity"
+                            )
+                            .value
+                    );
+
+
+                const unit =
+                    row
+                        .querySelector(
+                            ".receipt-unit"
+                        )
+                        .value;
+
+
+                const expiry =
+                    row
+                        .querySelector(
+                            ".receipt-expiry"
+                        )
+                        .value;
+
+
+                /* Tjek felterne */
+
+                if (
+                    !name ||
+                    !expiry ||
+                    isNaN(quantity) ||
+                    quantity <= 0
+                ) {
+
+                    alert(
+                        "Udfyld navn, mængde og udløbsdato for alle valgte varer."
+                    );
+
+                    return;
+
+                }
+
+
+                /* Tilføj til skabet */
+
+                ingredients.push({
+
+                    id:
+                        Date.now() +
+                        Math.random(),
+
+                    name:
+                        name,
+
+                    quantity:
+                        quantity,
+
+                    unit:
+                        unit,
+
+                    expiry:
+                        expiry
+
+                });
+
+
+                addedCount++;
+
+            }
+
+
+            /* Gem */
 
             if (addedCount > 0) {
 
@@ -1865,5 +2100,8 @@ if (addReceiptItemsBtn) {
     );
 
 }
-console.log("SKAB. NY SCRIPT VERSION 2026");
-alert("NY SCRIPT VERSION VIRKER");
+
+
+/* ========================================
+   SLUT PÅ SCRIPT
+======================================== */
