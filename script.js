@@ -1351,227 +1351,130 @@ function looksLikeFood(line) {
 
 function filterReceiptText(text) {
 
-```
-const lines = text
-    .split("\n")
-    .map(function (line) {
+    const lines = text.split("\n");
 
-        return line
-            .replace(/\|/g, "")
-            .replace(/\s+/g, " ")
-            .trim();
+    const foodItems = [];
+    const seenItems = new Set();
 
-    })
-    .filter(function (line) {
+    lines.forEach(function (line) {
 
-        return line.length > 1;
+        line = line.trim();
 
-    });
+        if (line.length < 3) {
+            return;
+        }
 
-
-const foodItems = [];
-const seenItems = new Set();
-
-
-lines.forEach(function (originalLine) {
-
-    let line = originalLine;
-
-
-    const upperLine =
-        line
-            .toUpperCase()
-            .replace(/\s+/g, " ")
-            .trim();
-
-
-    /* ==============================
-       PRISLINJER
-    ============================== */
-
-    if (isReceiptPrice(line)) {
-        return;
-    }
-
-
-    /* ==============================
-       KVITTERINGSTEKST
-    ============================== */
-
-    const containsReceiptWord =
-        RECEIPT_IGNORE_WORDS.some(
-            function (word) {
-
-                return upperLine.includes(word);
-
-            }
-        );
-
-
-    if (containsReceiptWord) {
-        return;
-    }
-
-
-    /* ==============================
-       SUPERMARKED
-    ============================== */
-
-    const containsSupermarket =
-        SUPERMARKETS.some(
-            function (store) {
-
-                return upperLine.includes(store);
-
-            }
-        );
-
-
-    if (containsSupermarket) {
-        return;
-    }
-
-
-    /* ==============================
-       FJERN PRIS
-    ============================== */
-
-    line = removePriceFromLine(line);
-
-
-    /* ==============================
-       FJERN STREGKODER
-    ============================== */
-
-    line = removeBarcode(line);
-
-
-    /* ==============================
-       FJERN DATOER
-    ============================== */
-
-    line = line.replace(
-        /\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b/g,
-        ""
-    );
-
-
-    /* ==============================
-       FJERN MÆNGDE / VÆGT
-    ============================== */
-
-    line = line.replace(
-        /\b\d+(?:[.,]\d+)?\s*(?:kg|g|mg|l|ml|cl|stk)\b/gi,
-        ""
-    );
-
-
-    /* ==============================
-       RENS OCR-TEGN
-    ============================== */
-
-    line = line
-        .replace(/^[^A-Za-zÆØÅæøå]+/, "")
-        .replace(
-            /[^A-Za-zÆØÅæøå0-9%.,'&+\- ]+$/g,
+        // Fjern priser
+        line = line.replace(
+            /\s+\d{1,4}[.,]\d{2}\s*(kr|dkk)?$/i,
             ""
-        )
-        .replace(/\s+/g, " ")
-        .trim();
-
-
-    if (!line) {
-        return;
-    }
-
-
-    /* ==============================
-       SKAL INDEHOLDE BOGSTAVER
-    ============================== */
-
-    const letters =
-        line.match(
-            /[A-Za-zÆØÅæøå]/g
         );
 
+        // Fjern stregkoder
+        line = line.replace(
+            /\b\d{8,14}\b/g,
+            ""
+        );
 
-    if (!letters || letters.length < 3) {
-        return;
-    }
+        line = line.trim();
 
+        if (line.length < 3) {
+            return;
+        }
 
-    /* ==============================
-       FOR MEGET TAL = IKKE VARE
-    ============================== */
+        const upper = line.toUpperCase();
 
-    const numbers =
-        line.match(/[0-9]/g) || [];
+        // Fjern tydelig kvitteringstekst
+        const ignoreWords = [
+            "TOTAL",
+            "SUBTOTAL",
+            "BETALT",
+            "KONTANT",
+            "KORT",
+            "MOMS",
+            "VAT",
+            "RABAT",
+            "KVITTERING",
+            "ORDRE",
+            "TERMINAL",
+            "BYTTE",
+            "BELØB",
+            "DATO",
+            "KASSE",
+            "EAN",
+            "BANK",
+            "VISA",
+            "MASTERCARD",
+            "MOBILEPAY",
+            "TRANSAKTION",
+            "SALDO",
+            "PAYMENT",
+            "CUSTOMER",
+            "RECEIPT",
+            "PRICE",
+            "PRIS"
+        ];
 
+        for (let i = 0; i < ignoreWords.length; i++) {
 
-    if (
-        numbers.length >
-        letters.length
-    ) {
-        return;
-    }
+            if (upper.includes(ignoreWords[i])) {
+                return;
+            }
 
+        }
 
-    /* ==============================
-       FOR KORT / MÆRKELIG TEKST
-    ============================== */
+        // Fjern kendte supermarkeder
+        const supermarkets = [
+            "REMA",
+            "NETTO",
+            "FØTEX",
+            "FOTEX",
+            "MENY",
+            "LIDL",
+            "ALDI",
+            "SPAR",
+            "COOP",
+            "IRMA",
+            "BILKA",
+            "BRUGSEN"
+        ];
 
-    if (line.length < 3) {
-        return;
-    }
+        for (let i = 0; i < supermarkets.length; i++) {
 
+            if (upper.includes(supermarkets[i])) {
+                return;
+            }
 
-    if (line.length > 60) {
-        return;
-    }
+        }
 
+        // Skal indeholde bogstaver
+        if (!/[A-Za-zÆØÅæøå]/.test(line)) {
+            return;
+        }
 
-    /* ==============================
-       DUBLETTER
-    ============================== */
-
-    const normalized =
-        line
+        // Fjern dubletter
+        const key = line
             .toLowerCase()
-            .replace(/[^a-zæøå0-9]+/g, "")
-            .trim();
+            .replace(/[^a-zæøå0-9]/g, "");
 
+        if (!key) {
+            return;
+        }
 
-    if (!normalized) {
-        return;
-    }
+        if (seenItems.has(key)) {
+            return;
+        }
 
+        seenItems.add(key);
 
-    if (seenItems.has(normalized)) {
-        return;
-    }
-
-
-    seenItems.add(normalized);
-
-
-    /* ==============================
-       GEM VAREN
-    ============================== */
-
-    foodItems.push({
-
-        name: line
+        foodItems.push({
+            name: line
+        });
 
     });
 
-});
-
-
-return foodItems;
-```
-
+    return foodItems;
 }
-
 
 
 /* ========================================
