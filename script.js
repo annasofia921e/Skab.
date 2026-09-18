@@ -1,12 +1,12 @@
-/* =========================================================
+/* ========================================
    SKAB.
-   MIT SKAB + KVITTERINGS OCR
-========================================================= */
+   MIT SKAB
+======================================== */
 
 
-/* =========================================================
-   DOM
-========================================================= */
+/* ========================================
+   DOM-ELEMENTER
+======================================== */
 
 const addIngredientBtn =
     document.getElementById("addIngredientBtn");
@@ -24,80 +24,66 @@ const ingredientList =
     document.getElementById("ingredientList");
 
 
-/* =========================================================
-   INGREDIENSER
-========================================================= */
-
-let ingredients = [];
-
-try {
-    ingredients =
-        JSON.parse(
-            localStorage.getItem("skabIngredients")
-        ) || [];
-} catch (error) {
-    ingredients = [];
-}
-
-
-function saveIngredients() {
-
-    localStorage.setItem(
-        "skabIngredients",
-        JSON.stringify(ingredients)
-    );
-
-}
-
-
-/* =========================================================
-   MANUEL TILFØJELSE
-========================================================= */
+/* ========================================
+   ÅBN TILFØJ-FORMULAR
+======================================== */
 
 if (addIngredientBtn) {
-
     addIngredientBtn.addEventListener(
         "click",
         function () {
-
-            if (ingredientForm) {
-
-                ingredientForm.classList.remove("hidden");
-
-            }
+            ingredientForm.classList.remove("hidden");
 
             const nameInput =
-                document.getElementById(
-                    "ingredientName"
-                );
+                document.getElementById("ingredientName");
 
             if (nameInput) {
                 nameInput.focus();
             }
-
         }
     );
-
 }
 
 
-if (closeFormBtn) {
+/* ========================================
+   LUK TILFØJ-FORMULAR
+======================================== */
 
+if (closeFormBtn) {
     closeFormBtn.addEventListener(
         "click",
         function () {
-
-            if (ingredientForm) {
-
-                ingredientForm.classList.add("hidden");
-
-            }
-
+            ingredientForm.classList.add("hidden");
         }
     );
-
 }
 
+
+/* ========================================
+   HENT INGREDIENSER
+======================================== */
+
+let ingredients =
+    JSON.parse(
+        localStorage.getItem("skabIngredients")
+    ) || [];
+
+
+/* ========================================
+   GEM INGREDIENSER
+======================================== */
+
+function saveIngredients() {
+    localStorage.setItem(
+        "skabIngredients",
+        JSON.stringify(ingredients)
+    );
+}
+
+
+/* ========================================
+   TILFØJ NY INGREDIENS
+======================================== */
 
 if (newIngredientForm) {
 
@@ -108,37 +94,16 @@ if (newIngredientForm) {
             event.preventDefault();
 
             const nameInput =
-                document.getElementById(
-                    "ingredientName"
-                );
+                document.getElementById("ingredientName");
 
             const quantityInput =
-                document.getElementById(
-                    "ingredientQuantity"
-                );
+                document.getElementById("ingredientQuantity");
 
             const unitInput =
-                document.getElementById(
-                    "ingredientUnit"
-                );
+                document.getElementById("ingredientUnit");
 
             const expiryInput =
-                document.getElementById(
-                    "ingredientExpiry"
-                );
-
-
-            if (
-                !nameInput ||
-                !quantityInput ||
-                !unitInput ||
-                !expiryInput
-            ) {
-
-                return;
-
-            }
-
+                document.getElementById("ingredientExpiry");
 
             const name =
                 nameInput.value.trim();
@@ -152,7 +117,6 @@ if (newIngredientForm) {
             const expiry =
                 expiryInput.value;
 
-
             if (
                 !name ||
                 !expiry ||
@@ -165,24 +129,17 @@ if (newIngredientForm) {
                 );
 
                 return;
-
             }
 
-
-            ingredients.push({
-
+            const ingredient = {
                 id: Date.now(),
-
                 name: name,
-
                 quantity: quantity,
-
                 unit: unit,
-
                 expiry: expiry
+            };
 
-            });
-
+            ingredients.push(ingredient);
 
             saveIngredients();
 
@@ -190,24 +147,15 @@ if (newIngredientForm) {
 
             newIngredientForm.reset();
 
-
-            if (ingredientForm) {
-
-                ingredientForm.classList.add(
-                    "hidden"
-                );
-
-            }
-
+            ingredientForm.classList.add("hidden");
         }
     );
-
 }
 
 
-/* =========================================================
+/* ========================================
    VIS INGREDIENSER
-========================================================= */
+======================================== */
 
 function renderIngredients() {
 
@@ -215,45 +163,34 @@ function renderIngredients() {
         return;
     }
 
-
     ingredientList.innerHTML = "";
-
 
     if (ingredients.length === 0) {
 
         ingredientList.innerHTML = `
             <div class="empty-state">
-
                 <p>
                     Dit skab er tomt.
                 </p>
-
                 <span>
                     Tilføj din første ingrediens ovenfor.
                 </span>
-
             </div>
         `;
 
         return;
-
     }
 
+    /* Sortér efter udløbsdato */
 
     ingredients.sort(
         function (a, b) {
-
-            return (
-                new Date(a.expiry) -
-                new Date(b.expiry)
-            );
-
+            return new Date(a.expiry) -
+                new Date(b.expiry);
         }
     );
 
-
-    const today =
-        new Date();
+    const today = new Date();
 
     today.setHours(
         0,
@@ -262,42 +199,41 @@ function renderIngredients() {
         0
     );
 
-
-    const soon =
-        new Date(today);
+    const soon = new Date();
 
     soon.setDate(
-        soon.getDate() + 7
+        today.getDate() + 7
     );
 
+    /* Ingredienser der udløber snart */
 
     const expiringSoon =
         ingredients.filter(
             function (ingredient) {
 
-                return (
+                const expiryDate =
                     new Date(
                         ingredient.expiry
-                    ) <= soon
-                );
+                    );
 
+                return expiryDate <= soon;
             }
         );
 
+    /* Resten */
 
     const otherIngredients =
         ingredients.filter(
             function (ingredient) {
 
-                return (
+                const expiryDate =
                     new Date(
                         ingredient.expiry
-                    ) > soon
-                );
+                    );
 
+                return expiryDate > soon;
             }
         );
-
 
     if (expiringSoon.length > 0) {
 
@@ -307,9 +243,7 @@ function renderIngredients() {
                 expiringSoon
             )
         );
-
     }
-
 
     if (otherIngredients.length > 0) {
 
@@ -319,15 +253,13 @@ function renderIngredients() {
                 otherIngredients
             )
         );
-
     }
-
 }
 
 
-/* =========================================================
-   INGREDIENS-GRUPPE
-========================================================= */
+/* ========================================
+   OPRET INGREDIENS-GRUPPE
+======================================== */
 
 function createIngredientGroup(
     title,
@@ -335,19 +267,15 @@ function createIngredientGroup(
 ) {
 
     const group =
-        document.createElement(
-            "section"
-        );
+        document.createElement("section");
 
     group.className =
         "generated-group";
 
-
     group.innerHTML = `
         <div class="generated-group-header">
-
             <h3>
-                ${escapeHTML(title)}
+                ${title}
             </h3>
 
             <span>
@@ -358,10 +286,8 @@ function createIngredientGroup(
                         : "ingredienser"
                 }
             </span>
-
         </div>
     `;
-
 
     items.forEach(
         function (ingredient) {
@@ -371,73 +297,68 @@ function createIngredientGroup(
                     ingredient
                 )
             );
-
         }
     );
 
-
     return group;
-
 }
 
 
-/* =========================================================
-   INGREDIENS-ELEMENT
-========================================================= */
+/* ========================================
+   OPRET INGREDIENS
+======================================== */
 
 function createIngredientElement(
     ingredient
 ) {
 
     const item =
-        document.createElement(
-            "article"
-        );
+        document.createElement("article");
 
-
-    const days =
+    const daysUntilExpiry =
         calculateDaysUntilExpiry(
             ingredient.expiry
         );
 
+    const urgent =
+        daysUntilExpiry <= 7;
 
     item.className =
         "generated-ingredient" +
-        (
-            days <= 7
-                ? " urgent"
-                : ""
-        );
+        (urgent ? " urgent" : "");
 
+    let quantityText;
 
-    const quantityText =
-        formatQuantity(
-            ingredient.quantity
-        )
-        + " "
-        + formatUnit(
-            ingredient.unit
-        );
+    if (
+        typeof ingredient.quantity === "number" &&
+        ingredient.unit
+    ) {
 
+        quantityText =
+            `${formatQuantity(
+                ingredient.quantity
+            )} ${formatUnit(
+                ingredient.unit
+            )}`;
+
+    } else {
+
+        quantityText =
+            ingredient.quantity || "";
+    }
 
     item.innerHTML = `
-
         <div class="generated-name">
 
             <h4>
-                ${escapeHTML(
-                    ingredient.name
-                )}
+                ${escapeHTML(ingredient.name)}
             </h4>
 
             <p>
-                ${escapeHTML(
-                    quantityText
-                )}
+                ${escapeHTML(quantityText)}
             </p>
 
         </div>
-
 
         <div class="generated-expiry">
 
@@ -453,7 +374,6 @@ function createIngredientElement(
 
         </div>
 
-
         <div class="ingredient-actions">
 
             <button
@@ -466,7 +386,7 @@ function createIngredientElement(
             <button
                 class="generated-delete"
                 type="button"
-                aria-label="Slet ingrediens"
+                aria-label="Slet ${escapeHTML(ingredient.name)}"
             >
                 ×
             </button>
@@ -474,12 +394,10 @@ function createIngredientElement(
         </div>
     `;
 
+    /* Rediger */
 
     const editButton =
-        item.querySelector(
-            ".edit-button"
-        );
-
+        item.querySelector(".edit-button");
 
     if (editButton) {
 
@@ -491,18 +409,16 @@ function createIngredientElement(
                     item,
                     ingredient
                 );
-
             }
         );
-
     }
 
+    /* Slet */
 
     const deleteButton =
         item.querySelector(
             ".generated-delete"
         );
-
 
     if (deleteButton) {
 
@@ -513,34 +429,26 @@ function createIngredientElement(
                 deleteIngredient(
                     ingredient.id
                 );
-
             }
         );
-
     }
 
-
     return item;
-
 }
 
 
-/* =========================================================
-   REDIGER
-========================================================= */
+/* ========================================
+   REDIGER INGREDIENS
+======================================== */
 
 function createEditForm(
     item,
     ingredient
 ) {
 
-    item.classList.add(
-        "editing"
-    );
-
+    item.classList.add("editing");
 
     item.innerHTML = `
-
         <div class="edit-form">
 
             <div class="edit-field">
@@ -552,13 +460,10 @@ function createEditForm(
                 <input
                     type="text"
                     class="edit-name"
-                    value="${escapeHTML(
-                        ingredient.name
-                    )}"
+                    value="${escapeHTML(ingredient.name)}"
                 >
 
             </div>
-
 
             <div class="edit-field">
 
@@ -608,7 +513,6 @@ function createEditForm(
 
             </div>
 
-
             <div class="edit-field">
 
                 <label>
@@ -622,7 +526,6 @@ function createEditForm(
                 >
 
             </div>
-
 
             <div class="edit-actions">
 
@@ -645,72 +548,54 @@ function createEditForm(
         </div>
     `;
 
+    const unitSelect =
+        item.querySelector(".edit-unit");
 
-    const unit =
-        item.querySelector(
-            ".edit-unit"
-        );
+    if (unitSelect) {
 
-    if (unit) {
-
-        unit.value =
+        unitSelect.value =
             ingredient.unit;
-
     }
 
-
-    const save =
+    const saveButton =
         item.querySelector(
             ".save-edit-button"
         );
 
+    if (saveButton) {
 
-    if (save) {
-
-        save.addEventListener(
+        saveButton.addEventListener(
             "click",
             function () {
 
-                const name =
+                const newName =
                     item
-                        .querySelector(
-                            ".edit-name"
-                        )
+                        .querySelector(".edit-name")
                         .value
                         .trim();
 
-
-                const quantity =
+                const newQuantity =
                     Number(
                         item
-                            .querySelector(
-                                ".edit-amount"
-                            )
+                            .querySelector(".edit-amount")
                             .value
                     );
 
-
                 const newUnit =
                     item
-                        .querySelector(
-                            ".edit-unit"
-                        )
+                        .querySelector(".edit-unit")
                         .value;
 
-
-                const expiry =
+                const newExpiry =
                     item
-                        .querySelector(
-                            ".edit-expiry"
-                        )
+                        .querySelector(".edit-expiry")
                         .value;
-
 
                 if (
-                    !name ||
-                    !expiry ||
-                    isNaN(quantity) ||
-                    quantity < 0
+                    !newName ||
+                    !newExpiry ||
+                    isNaN(newQuantity) ||
+                    newQuantity < 0
                 ) {
 
                     alert(
@@ -718,123 +603,134 @@ function createEditForm(
                     );
 
                     return;
-
                 }
 
-
                 ingredient.name =
-                    name;
+                    newName;
 
                 ingredient.quantity =
-                    quantity;
+                    newQuantity;
 
                 ingredient.unit =
                     newUnit;
 
                 ingredient.expiry =
-                    expiry;
-
+                    newExpiry;
 
                 saveIngredients();
 
                 renderIngredients();
-
             }
         );
-
     }
 
-
-    const cancel =
+    const cancelButton =
         item.querySelector(
             ".cancel-edit-button"
         );
 
+    if (cancelButton) {
 
-    if (cancel) {
-
-        cancel.addEventListener(
+        cancelButton.addEventListener(
             "click",
             function () {
 
                 renderIngredients();
-
             }
         );
-
     }
-
 }
 
 
-/* =========================================================
-   SLET
-========================================================= */
+/* ========================================
+   NORMALISERING
+======================================== */
 
-function deleteIngredient(id) {
+function normalizeIngredientName(name) {
 
-    ingredients =
-        ingredients.filter(
-            function (ingredient) {
+    const normalized =
+        name
+            .toLowerCase()
+            .trim();
 
-                return (
-                    ingredient.id !== id
-                );
+    const variations = {
 
-            }
-        );
+        "tomater": "tomat",
+        "tomat": "tomat",
 
+        "kartofler": "kartoffel",
+        "kartoffel": "kartoffel",
 
-    saveIngredients();
+        "gulerødder": "gulerod",
+        "gulerod": "gulerod",
 
-    renderIngredients();
+        "citroner": "citron",
+        "citron": "citron",
 
+        "agurker": "agurk",
+        "agurk": "agurk",
+
+        "æbler": "æble",
+        "æble": "æble",
+
+        "bananer": "banan",
+        "banan": "banan",
+
+        "pærer": "pære",
+        "pære": "pære",
+
+        "appelsiner": "appelsin",
+        "appelsin": "appelsin",
+
+        "ærter": "ært",
+        "ært": "ært",
+
+        "løg": "løg",
+        "æg": "æg",
+        "spinat": "spinat",
+        "broccoli": "broccoli"
+    };
+
+    return (
+        variations[normalized] ||
+        normalized
+    );
 }
 
 
-/* =========================================================
-   HJÆLPEFUNKTIONER
-========================================================= */
+/* ========================================
+   FORMATÉR MÆNGDE
+======================================== */
 
-function formatQuantity(
-    quantity
-) {
+function formatQuantity(quantity) {
 
-    const number =
-        Number(quantity);
-
-
-    if (
-        Number.isInteger(number)
-    ) {
-
-        return String(number);
-
+    if (Number.isInteger(quantity)) {
+        return quantity;
     }
 
-
-    return number
+    return quantity
         .toFixed(2)
-        .replace(
-            /\.?0+$/,
-            ""
-        );
-
+        .replace(/\.?0+$/, "");
 }
 
+
+/* ========================================
+   FORMATÉR ENHED
+======================================== */
 
 function formatUnit(unit) {
 
     if (unit === "stk") {
-
         return "stk.";
-
     }
 
-    return unit || "";
-
+    return unit;
 }
 
+
+/* ========================================
+   BEREGN DAGE TIL UDLØB
+======================================== */
 
 function calculateDaysUntilExpiry(
     expiry
@@ -850,22 +746,21 @@ function calculateDaysUntilExpiry(
         0
     );
 
-
-    const date =
+    const expiryDate =
         new Date(expiry);
 
-    date.setHours(
+    expiryDate.setHours(
         0,
         0,
         0,
         0
     );
 
+    const difference =
+        expiryDate - today;
 
     return Math.ceil(
-        (
-            date - today
-        ) /
+        difference /
         (
             1000 *
             60 *
@@ -873,9 +768,12 @@ function calculateDaysUntilExpiry(
             24
         )
     );
-
 }
 
+
+/* ========================================
+   FORMATÉR UDLØBSDATO
+======================================== */
 
 function formatExpiry(
     expiry
@@ -886,30 +784,26 @@ function formatExpiry(
             expiry
         );
 
-
     if (days < 0) {
         return "Udløbet";
     }
-
 
     if (days === 0) {
         return "I dag";
     }
 
-
     if (days === 1) {
         return "I morgen";
     }
-
 
     if (days <= 7) {
         return `Om ${days} dage`;
     }
 
+    const date =
+        new Date(expiry);
 
-    return new Date(
-        expiry
-    ).toLocaleDateString(
+    return date.toLocaleDateString(
         "da-DK",
         {
             day: "numeric",
@@ -917,49 +811,96 @@ function formatExpiry(
             year: "numeric"
         }
     );
-
 }
 
 
-function escapeHTML(
-    value
+/* ========================================
+   SLET INGREDIENS
+======================================== */
+
+function deleteIngredient(
+    id
 ) {
 
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
+    ingredients =
+        ingredients.filter(
+            function (ingredient) {
+
+                return ingredient.id !== id;
+            }
         );
 
+    saveIngredients();
+
+    renderIngredients();
 }
 
 
-/* =========================================================
-   START
-========================================================= */
+/* ========================================
+   BESKYT HTML
+======================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ========================================
+   START MIT SKAB
+======================================== */
 
 renderIngredients();
 
 
-/* =========================================================
-   KVITTERING OCR
-========================================================= */
+/* ========================================
+   SKAB. — PWA
+======================================== */
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            navigator.serviceWorker.register(
+                "./service-worker.js"
+            )
+            .then(
+                function () {
+
+                    console.log(
+                        "SKAB. PWA er aktiveret."
+                    );
+                }
+            )
+            .catch(
+                function (error) {
+
+                    console.log(
+                        "PWA kunne ikke aktiveres:",
+                        error
+                    );
+                }
+            );
+        }
+    );
+}
+
+
+/* ========================================
+   KVITTERINGS OCR
+======================================== */
+
+
+/* ========================================
+   DOM
+======================================== */
 
 const scanReceiptBtn =
     document.getElementById(
@@ -971,468 +912,388 @@ const receiptInput =
         "receiptInput"
     );
 
-let receiptReview =
+const receiptReview =
     document.getElementById(
         "receiptReview"
     );
 
-let receiptItems =
+const receiptItems =
     document.getElementById(
         "receiptItems"
     );
 
-let closeReceiptReview =
+const closeReceiptReview =
     document.getElementById(
         "closeReceiptReview"
     );
 
-let addReceiptItemsBtn =
+const addReceiptItemsBtn =
     document.getElementById(
         "addReceiptItemsBtn"
     );
 
 
-/* =========================================================
-   FLYT OCR-BOKSEN UD AF FORMULAREN
-========================================================= */
+/* ========================================
+   ORD SOM SKAL FILTRERES VÆK
+======================================== */
 
-if (
-    receiptReview &&
-    ingredientForm &&
-    ingredientForm.parentNode
-) {
+const RECEIPT_IGNORE_WORDS = [
 
-    ingredientForm.parentNode.insertBefore(
-        receiptReview,
-        ingredientForm
-    );
+    "TOTAL",
+    "SUBTOTAL",
+    "BETALT",
+    "KORT",
+    "KONTANT",
+    "MOMS",
+    "VAT",
+    "RABAT",
+    "BONUS",
+    "KVITTERING",
+    "ORDRE",
+    "TERMINAL",
+    "BYTTE",
+    "BELØB",
+    "DATO",
+    "TID",
+    "TAK FOR",
+    "TAK!",
+    "KUNDE",
+    "KASSE",
+    "EAN",
+    "BANK",
+    "VISA",
+    "MASTERCARD",
+    "MAESTRO",
+    "MOBILEPAY",
+    "TRANSAKTION",
+    "TRANSAKTIONS",
+    "SALDO",
+    "CHANGE",
+    "CASH",
+    "PAYMENT",
+    "THANK",
+    "CUSTOMER",
+    "REGISTER",
+    "RECEIPT",
+    "PRICE",
+    "PRIS",
+    "STREGKODE"
+];
 
+
+/* ========================================
+   SUPERMARKEDER
+======================================== */
+
+const SUPERMARKETS = [
+
+    "REMA",
+    "REMA 1000",
+    "NETTO",
+    "FØTEX",
+    "FOTEX",
+    "MENY",
+    "LIDL",
+    "ALDI",
+    "SPAR",
+    "365",
+    "365DISCOUNT",
+    "COOP",
+    "IRMA",
+    "SUPERBRUGSEN",
+    "BRUGSEN",
+    "BILKA",
+    "DAGLI'BRUGSEN",
+    "DAGLI BRUGSEN"
+];
+
+
+/* ========================================
+   MADVARER
+======================================== */
+
+const FOOD_WORDS = [
+
+    "mælk",
+    "skummetmælk",
+    "minimælk",
+    "letmælk",
+
+    "skyr",
+    "yoghurt",
+    "yogurt",
+    "fløde",
+    "smør",
+    "æg",
+    "ost",
+
+    "havre",
+    "havregryn",
+    "mel",
+    "sukker",
+    "ris",
+    "pasta",
+    "nudler",
+
+    "brød",
+    "rugbrød",
+    "toast",
+    "boller",
+
+    "kartoffel",
+    "kartofler",
+
+    "tomat",
+    "tomater",
+
+    "agurk",
+    "peberfrugt",
+
+    "gulerod",
+    "gulerødder",
+
+    "løg",
+    "hvidløg",
+    "porre",
+
+    "broccoli",
+    "blomkål",
+    "spinat",
+    "salat",
+
+    "avocado",
+
+    "banan",
+    "bananer",
+
+    "æble",
+    "æbler",
+
+    "pære",
+    "pærer",
+
+    "appelsin",
+    "appelsiner",
+
+    "citron",
+    "lime",
+
+    "jordbær",
+    "blåbær",
+    "hindbær",
+    "vindruer",
+
+    "kylling",
+    "kyllingebryst",
+
+    "oksekød",
+    "svinekød",
+    "bacon",
+    "skinke",
+    "pølser",
+
+    "laks",
+    "tun",
+    "fisk",
+    "rejer",
+    "kød",
+
+    "bønner",
+    "kikærter",
+    "linser",
+    "majs",
+    "ærter",
+
+    "champignon",
+    "svampe",
+
+    "pesto",
+    "tomatsauce",
+    "tomatsovs",
+
+    "bouillon",
+    "olie",
+    "olivenolie",
+    "eddike",
+
+    "salt",
+    "peber",
+    "ketchup",
+    "sennep",
+    "mayonnaise",
+
+    "nødder",
+    "mandler",
+    "peanutbutter",
+
+    "chokolade",
+    "kakao",
+
+    "juice",
+    "kaffe",
+    "te"
+];
+
+
+/* ========================================
+   TJEK OM LINJE ER EN PRIS
+======================================== */
+
+function isReceiptPrice(line) {
+
+    return /^\s*(?:DKK\s*)?\d{1,4}(?:[.,]\d{2})\s*(?:KR|DKK)?\s*$/i
+        .test(line);
 }
 
 
-/* =========================================================
-   OCR-STYLING
-   Vi indsætter den direkte fra JavaScript,
-   så CSS-filen ikke er afgørende.
-========================================================= */
+/* ========================================
+   FJERN PRIS FRA PRODUKT
+======================================== */
 
-const receiptStyle =
-    document.createElement(
-        "style"
-    );
+function removePriceFromLine(line) {
 
-
-receiptStyle.textContent = `
-
-.receipt-review {
-    display: none;
-    margin-top: 40px;
-    padding: 30px;
-    background: #f3f1e9;
-    border: 1px solid #d7d3c8;
+    return line
+        .replace(
+            /\s+\d{1,4}[.,]\d{2}\s*(?:kr|dkk)?\s*$/i,
+            ""
+        )
+        .trim();
 }
 
-.receipt-review.visible {
-    display: block;
+
+/* ========================================
+   FJERN STREGKODER
+======================================== */
+
+function removeBarcode(line) {
+
+    return line
+        .replace(
+            /\b\d{8,14}\b/g,
+            ""
+        )
+        .trim();
 }
 
-.receipt-review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    margin-bottom: 30px;
-}
 
-.receipt-review-header h2 {
-    margin: 6px 0 8px;
-}
+/* ========================================
+   TJEK OM DET LIGNER MAD
+======================================== */
 
-.receipt-review-header p {
-    margin: 0;
-}
+function looksLikeFood(line) {
 
-.receipt-close {
-    border: none;
-    background: transparent;
-    font-size: 28px;
-    cursor: pointer;
-    color: #172a46;
-}
+    const normalized =
+        line
+            .toLowerCase()
+            .replace(/\s+/g, " ")
+            .trim();
 
-.receipt-items {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
+    return FOOD_WORDS.some(
+        function (food) {
 
-.receipt-item {
-    background: #ffffff;
-    border: 1px solid #d7d3c8;
-    padding: 20px;
-}
-
-.receipt-item-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.receipt-select {
-    width: 18px;
-    height: 18px;
-}
-
-.receipt-name {
-    flex: 1;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #d7d3c8;
-    background: #f3f1e9;
-    padding: 12px;
-    font-family: "DM Sans", sans-serif;
-    font-size: 13px;
-}
-
-.receipt-item-fields {
-    display: grid;
-    grid-template-columns: 1fr 100px 1.2fr;
-    gap: 12px;
-}
-
-.receipt-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.receipt-field label {
-    font-size: 8px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-}
-
-.receipt-field input,
-.receipt-field select {
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #d7d3c8;
-    background: #f3f1e9;
-    padding: 12px;
-    font-family: "DM Sans", sans-serif;
-    font-size: 12px;
-}
-
-.receipt-add-all {
-    margin-top: 24px;
-    border: none;
-    background: #172a46;
-    color: #f3f1e9;
-    padding: 14px 22px;
-    font-family: "DM Sans", sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    cursor: pointer;
-}
-
-.receipt-progress {
-    margin-top: 15px;
-    font-size: 11px;
-    color: #59616b;
-}
-
-@media (max-width: 600px) {
-
-    .receipt-review {
-        padding: 20px;
-    }
-
-    .receipt-item-fields {
-        grid-template-columns: 1fr;
-    }
-
-    .receipt-add-all {
-        width: 100%;
-    }
-
-}
-
-`;
-
-
-document.head.appendChild(
-    receiptStyle
-);
-
-
-/* =========================================================
-   ÅBN KVITTERING
-========================================================= */
-
-if (scanReceiptBtn) {
-
-    scanReceiptBtn.addEventListener(
-        "click",
-        function () {
-
-            if (receiptInput) {
-
-                receiptInput.click();
-
-            }
-
+            return normalized.includes(food);
         }
     );
-
 }
 
 
-/* =========================================================
-   OCR
-========================================================= */
-
-if (receiptInput) {
-
-    receiptInput.addEventListener(
-        "change",
-        async function () {
-
-            const file =
-                receiptInput.files &&
-                receiptInput.files[0];
-
-
-            if (!file) {
-                return;
-            }
-
-
-            try {
-
-                showReceiptLoading();
-
-
-                const result =
-                    await Tesseract.recognize(
-                        file,
-                        "eng",
-                        {
-                            logger:
-                                function (
-                                    message
-                                ) {
-
-                                    updateOCRProgress(
-                                        message
-                                    );
-
-                                }
-                        }
-                    );
-
-
-                const text =
-                    result.data.text || "";
-
-
-                const products =
-                    extractReceiptProducts(
-                        text
-                    );
-
-
-                if (
-                    products.length === 0
-                ) {
-
-                    hideReceiptReview();
-
-                    alert(
-                        "Jeg kunne ikke finde nogen varer på kvitteringen. Prøv et tydeligere billede."
-                    );
-
-                    return;
-
-                }
-
-
-                showReceiptReview(
-                    products
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "OCR fejl:",
-                    error
-                );
-
-
-                hideReceiptReview();
-
-
-                alert(
-                    "Der opstod en fejl under læsningen af kvitteringen."
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   OCR PROGRESS
-========================================================= */
-
-function showReceiptLoading() {
-
-    if (!receiptReview) {
-        return;
-    }
-
-
-    receiptReview.classList.add(
-        "visible"
-    );
-
-
-    receiptReview.innerHTML = `
-
-        <div class="receipt-review-header">
-
-            <div>
-
-                <p class="eyebrow">
-                    KVITTERING
-                </p>
-
-                <h2>
-                    Læser kvitteringen
-                </h2>
-
-                <p>
-                    Det kan tage et øjeblik.
-                </p>
-
-                <div
-                    class="receipt-progress"
-                    id="receiptProgress"
-                >
-                    Starter OCR...
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-
-function updateOCRProgress(
-    message
-) {
-
-    const progress =
-        document.getElementById(
-            "receiptProgress"
-        );
-
-
-    if (!progress) {
-        return;
-    }
-
-
-    if (
-        message.status
-    ) {
-
-        let percent = "";
-
-        if (
-            typeof message.progress ===
-            "number"
-        ) {
-
-            percent =
-                " " +
-                Math.round(
-                    message.progress *
-                    100
-                ) +
-                "%";
-
-        }
-
-
-        progress.textContent =
-            message.status +
-            percent;
-
-    }
-
-}
-
-
-/* =========================================================
-   FIND PRODUKTER PÅ KVITTERING
-========================================================= */
-
-function extractReceiptProducts(
-    text
-) {
+/* ========================================
+   FILTRÉR KVITTERINGSTEKST
+======================================== */
+
+function filterReceiptText(text) {
 
     const lines =
-        text
-            .split(/\r?\n/)
-            .map(
-                function (line) {
+        text.split("\n");
 
-                    return cleanReceiptLine(
-                        line
-                    );
+    const foodItems = [];
 
-                }
-            )
-            .filter(
-                function (line) {
-
-                    return line.length >= 3;
-
-                }
-            );
-
-
-    const products = [];
-
-    const seen = new Set();
-
+    const seenItems =
+        new Set();
 
     lines.forEach(
         function (line) {
 
+            line = line.trim();
+
+            if (line.length < 3) {
+                return;
+            }
+
+            /* Fjern priser */
+
+            line =
+                removePriceFromLine(line);
+
+            /* Fjern stregkoder */
+
+            line =
+                removeBarcode(line);
+
+            line =
+                line.trim();
+
+            if (line.length < 3) {
+                return;
+            }
+
+            const upper =
+                line.toUpperCase();
+
+            /* Fjern tydelig kvitteringstekst */
+
+            for (
+                let i = 0;
+                i < RECEIPT_IGNORE_WORDS.length;
+                i++
+            ) {
+
+                if (
+                    upper.includes(
+                        RECEIPT_IGNORE_WORDS[i]
+                    )
+                ) {
+
+                    return;
+                }
+            }
+
+            /* Fjern supermarkeder */
+
+            for (
+                let i = 0;
+                i < SUPERMARKETS.length;
+                i++
+            ) {
+
+                if (
+                    upper.includes(
+                        SUPERMARKETS[i]
+                    )
+                ) {
+
+                    return;
+                }
+            }
+
+            /* Skal indeholde bogstaver */
+
             if (
-                isDefinitelyNotProduct(
-                    line
-                )
+                !/[A-Za-zÆØÅæøå]/.test(line)
             ) {
 
                 return;
-
             }
 
+            /* Fjern meget lange OCR-linjer */
 
-            const normalized =
+            if (line.length > 70) {
+                return;
+            }
+
+            /* Fjern dubletter */
+
+            const key =
                 line
                     .toLowerCase()
                     .replace(
@@ -1440,739 +1301,836 @@ function extractReceiptProducts(
                         ""
                     );
 
-
-            if (!normalized) {
+            if (!key) {
                 return;
             }
 
-
             if (
-                seen.has(normalized)
+                seenItems.has(key)
             ) {
 
                 return;
-
             }
 
+            seenItems.add(key);
 
-            seen.add(
-                normalized
-            );
-
-
-            products.push(
-                line
-            );
-
+            foodItems.push({
+                name: line
+            });
         }
     );
 
-
-    return products;
-
+    return foodItems;
 }
 
 
-/* =========================================================
-   RENS OCR-LINJE
-========================================================= */
+/* ========================================
+   FORBERED KVITTERINGSBILLEDE
+   TIL TELEFON-OCR
+======================================== */
 
-function cleanReceiptLine(
-    line
-) {
+async function prepareReceiptImage(file) {
 
-    let result =
-        String(line || "")
-            .replace(
-                /\|/g,
-                ""
-            )
-            .replace(
-                /[ \t]+/g,
-                " "
-            )
-            .trim();
+    return new Promise(
+        function (resolve, reject) {
 
+            const image =
+                new Image();
 
-    /* Pris i slutningen */
+            const objectURL =
+                URL.createObjectURL(file);
 
-    result =
-        result.replace(
-            /\s+\d{1,5}[.,]\d{2}\s*(?:kr|dkk)?$/i,
-            ""
-        );
+            image.onload =
+                function () {
 
+                    try {
 
-    /* Pris med komma/punkt */
+                        /*
+                         * Gør billedet større.
+                         * Det hjælper især på telefoner,
+                         * hvor tekst ellers kan blive for lille.
+                         */
 
-    result =
-        result.replace(
-            /\s+\d{1,5}[.,]\d{2}\s*$/,
-            ""
-        );
+                        const maxWidth = 2400;
 
+                        const scale =
+                            Math.min(
+                                2.5,
+                                maxWidth / image.width
+                            );
 
-    /* Stregkode */
+                        const width =
+                            Math.max(
+                                1200,
+                                Math.round(
+                                    image.width * scale
+                                )
+                            );
 
-    result =
-        result.replace(
-            /\b\d{8,14}\b/g,
-            ""
-        );
+                        const height =
+                            Math.round(
+                                image.height *
+                                (width / image.width)
+                            );
 
+                        const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
 
-    /* Dato */
+                        canvas.width =
+                            width;
 
-    result =
-        result.replace(
-            /\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b/g,
-            ""
-        );
+                        canvas.height =
+                            height;
 
+                        const ctx =
+                            canvas.getContext(
+                                "2d",
+                                {
+                                    willReadFrequently:
+                                        true
+                                }
+                            );
 
-    result =
-        result
-            .replace(
-                /^[^A-Za-zÆØÅæøå]+/,
-                ""
-            )
-            .replace(
-                /\s+/g,
-                " "
-            )
-            .trim();
+                        /*
+                         * Høj kvalitet når billedet
+                         * skaleres op.
+                         */
 
+                        ctx.imageSmoothingEnabled =
+                            true;
 
-    return result;
+                        ctx.imageSmoothingQuality =
+                            "high";
 
-}
+                        ctx.drawImage(
+                            image,
+                            0,
+                            0,
+                            width,
+                            height
+                        );
 
+                        /*
+                         * Hent pixels.
+                         */
 
-/* =========================================================
-   SORTER TING FRA DER IKKE ER VARER
-========================================================= */
+                        const imageData =
+                            ctx.getImageData(
+                                0,
+                                0,
+                                width,
+                                height
+                            );
 
-function isDefinitelyNotProduct(
-    line
-) {
+                        const data =
+                            imageData.data;
 
-    const upper =
-        line.toUpperCase();
+                        /*
+                         * Gråtone + kontrast.
+                         */
 
+                        const contrast =
+                            1.65;
 
-    /* Kun tal */
+                        const factor =
+                            (259 *
+                                (contrast + 255)) /
+                            (255 *
+                                (259 - contrast));
 
-    if (
-        /^[\d\s.,:-]+$/.test(
-            line
-        )
-    ) {
+                        for (
+                            let i = 0;
+                            i < data.length;
+                            i += 4
+                        ) {
 
-        return true;
+                            const r =
+                                data[i];
 
-    }
+                            const g =
+                                data[i + 1];
 
+                            const b =
+                                data[i + 2];
 
-    /* For lidt tekst */
+                            /*
+                             * Mere præcis gråtone
+                             * end blot gennemsnit.
+                             */
 
-    const letters =
-        line.match(
-            /[A-Za-zÆØÅæøå]/g
-        );
+                            let gray =
+                                0.299 * r +
+                                0.587 * g +
+                                0.114 * b;
 
+                            /*
+                             * Kontrast.
+                             */
 
-    if (
-        !letters ||
-        letters.length < 3
-    ) {
+                            gray =
+                                factor *
+                                (gray - 128) +
+                                128;
 
-        return true;
+                            /*
+                             * Hold værdien
+                             * indenfor 0-255.
+                             */
 
-    }
+                            gray =
+                                Math.max(
+                                    0,
+                                    Math.min(
+                                        255,
+                                        gray
+                                    )
+                                );
 
+                            data[i] =
+                                gray;
 
-    /* Kvitteringstekst */
+                            data[i + 1] =
+                                gray;
 
-    const ignoredWords = [
+                            data[i + 2] =
+                                gray;
+                        }
 
-        "TOTAL",
-        "SUBTOTAL",
-        "BETALT",
-        "KONTANT",
-        "KORT",
-        "MOMS",
-        "VAT",
-        "RABAT",
-        "BONUS",
-        "KVITTERING",
-        "ORDRE",
-        "TERMINAL",
-        "BYTTE",
-        "BELØB",
-        "DATO",
-        "TID",
-        "TAK FOR",
-        "TAK!",
-        "KUNDE",
-        "KASSE",
-        "EAN",
-        "BANK",
-        "VISA",
-        "MASTERCARD",
-        "MAESTRO",
-        "MOBILEPAY",
-        "TRANSAKTION",
-        "SALDO",
-        "PAYMENT",
-        "THANK",
-        "CUSTOMER",
-        "REGISTER",
-        "RECEIPT",
-        "PRICE",
-        "PRIS",
-        "STREGKODE"
+                        ctx.putImageData(
+                            imageData,
+                            0,
+                            0
+                        );
 
-    ];
+                        /*
+                         * Lav det til PNG.
+                         */
 
+                        canvas.toBlob(
+                            function (blob) {
 
-    for (
-        let i = 0;
-        i < ignoredWords.length;
-        i++
-    ) {
+                                URL.revokeObjectURL(
+                                    objectURL
+                                );
 
-        if (
-            upper.includes(
-                ignoredWords[i]
-            )
-        ) {
+                                if (!blob) {
 
-            return true;
+                                    reject(
+                                        new Error(
+                                            "Kunne ikke behandle kvitteringsbilledet."
+                                        )
+                                    );
 
+                                    return;
+                                }
+
+                                resolve(blob);
+                            },
+                            "image/png"
+                        );
+
+                    }
+                    catch (error) {
+
+                        URL.revokeObjectURL(
+                            objectURL
+                        );
+
+                        reject(error);
+                    }
+                };
+
+            image.onerror =
+                function () {
+
+                    URL.revokeObjectURL(
+                        objectURL
+                    );
+
+                    reject(
+                        new Error(
+                            "Kunne ikke åbne billedet."
+                        )
+                    );
+                };
+
+            image.src =
+                objectURL;
         }
-
-    }
-
-
-    /* Supermarkeder */
-
-    const supermarkets = [
-
-        "REMA 1000",
-        "REMA",
-        "NETTO",
-        "FØTEX",
-        "FOTEX",
-        "MENY",
-        "LIDL",
-        "ALDI",
-        "SPAR",
-        "365",
-        "COOP",
-        "IRMA",
-        "SUPERBRUGSEN",
-        "BRUGSEN",
-        "BILKA"
-
-    ];
-
-
-    for (
-        let i = 0;
-        i < supermarkets.length;
-        i++
-    ) {
-
-        if (
-            upper === supermarkets[i] ||
-            upper.startsWith(
-                supermarkets[i] + " "
-            )
-        ) {
-
-            return true;
-
-        }
-
-    }
-
-
-    /* For lang OCR-linje */
-
-    if (
-        line.length > 70
-    ) {
-
-        return true;
-
-    }
-
-
-    return false;
-
+    );
 }
 
 
-/* =========================================================
-   VIS OCR RESULTAT
-========================================================= */
+/* ========================================
+   OCR-PROGRESS
+======================================== */
 
-function showReceiptReview(
-    products
-) {
+function updateOCRProgress(message) {
 
-    if (!receiptReview) {
+    if (
+        !scanReceiptBtn ||
+        !message
+    ) {
         return;
     }
 
+    if (
+        message.status ===
+        "recognizing text"
+    ) {
 
-    receiptReview.innerHTML = `
-
-        <div class="receipt-review-header">
-
-            <div>
-
-                <p class="eyebrow">
-                    KVITTERING
-                </p>
-
-                <h2>
-                    Tjek dine varer
-                </h2>
-
-                <p>
-                    ${products.length} varer fundet.
-                    Fjern markeringen fra dem,
-                    du ikke vil gemme.
-                </p>
-
-            </div>
-
-
-            <button
-                id="closeReceiptReview"
-                class="receipt-close"
-                type="button"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <div
-            id="receiptItems"
-            class="receipt-items"
-        ></div>
-
-
-        <button
-            id="addReceiptItemsBtn"
-            class="receipt-add-all"
-            type="button"
-        >
-            Tilføj valgte til mit skab
-        </button>
-
-    `;
-
-
-    receiptItems =
-        document.getElementById(
-            "receiptItems"
-        );
-
-
-    closeReceiptReview =
-        document.getElementById(
-            "closeReceiptReview"
-        );
-
-
-    addReceiptItemsBtn =
-        document.getElementById(
-            "addReceiptItemsBtn"
-        );
-
-
-    products.forEach(
-        function (product, index) {
-
-            receiptItems.appendChild(
-                createReceiptItem(
-                    product,
-                    index
-                )
+        const percent =
+            Math.round(
+                (message.progress || 0) * 100
             );
 
+        scanReceiptBtn.innerHTML =
+            `Læser kvittering... ${percent}%`;
+
+    } else {
+
+        scanReceiptBtn.innerHTML =
+            "Forbereder kvittering...";
+    }
+}
+
+
+/* ========================================
+   ÅBN KAMERA / FILVÆLGER
+======================================== */
+
+if (
+    scanReceiptBtn &&
+    receiptInput
+) {
+
+    scanReceiptBtn.addEventListener(
+        "click",
+        function () {
+
+            receiptInput.click();
         }
     );
 
+    receiptInput.addEventListener(
+        "change",
+        async function () {
+
+            if (
+                !receiptInput.files ||
+                !receiptInput.files.length
+            ) {
+                return;
+            }
+
+            const receipt =
+                receiptInput.files[0];
+
+            scanReceiptBtn.disabled =
+                true;
+
+            scanReceiptBtn.innerHTML =
+                "Forbereder kvittering...";
+
+            try {
+
+                /* Tjek Tesseract */
+
+                if (
+                    typeof Tesseract ===
+                    "undefined"
+                ) {
+
+                    throw new Error(
+                        "Tesseract blev ikke indlæst. Tjek script-linket i skab.html."
+                    );
+                }
+
+                console.log(
+                    "SKAB.: Tesseract er indlæst."
+                );
+
+                /*
+                 * NYT:
+                 * Forbered billedet før OCR.
+                 */
+
+                console.log(
+                    "SKAB.: Behandler kvitteringsbillede..."
+                );
+
+                const processedImage =
+                    await prepareReceiptImage(
+                        receipt
+                    );
+
+                console.log(
+                    "SKAB.: Billedet er behandlet."
+                );
+
+                /*
+                 * Opret OCR-worker.
+                 */
+
+                const worker =
+                    await Tesseract.createWorker(
+                        "eng",
+                        1,
+                        {
+
+                            workerPath:
+                                "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/worker.min.js",
+
+                            corePath:
+                                "https://cdn.jsdelivr.net/npm/tesseract.js-core@5.0.0",
+
+                            logger:
+                                function (message) {
+
+                                    console.log(
+                                        "OCR:",
+                                        message
+                                    );
+
+                                    updateOCRProgress(
+                                        message
+                                    );
+                                }
+                        }
+                    );
+
+                console.log(
+                    "SKAB.: OCR-worker er klar."
+                );
+
+                /*
+                 * Læs det behandlede billede.
+                 */
+
+                const result =
+                    await worker.recognize(
+                        processedImage
+                    );
+
+                const text =
+                    result.data.text || "";
+
+                console.log(
+                    "SKAB.: ORIGINAL OCR:",
+                    text
+                );
+
+                /*
+                 * Luk worker.
+                 */
+
+                await worker.terminate();
+
+                /*
+                 * Ingen tekst.
+                 */
+
+                if (
+                    !text ||
+                    !text.trim()
+                ) {
+
+                    alert(
+                        "OCR kunne ikke finde nogen tekst på kvitteringen."
+                    );
+
+                    return;
+                }
+
+                /*
+                 * Filtrér teksten.
+                 */
+
+                const foodItems =
+                    filterReceiptText(
+                        text
+                    );
+
+                console.log(
+                    "SKAB.: FUNDET MAD:",
+                    foodItems
+                );
+
+                /*
+                 * Ingen madvarer.
+                 */
+
+                if (
+                    foodItems.length === 0
+                ) {
+
+                    alert(
+                        "Jeg kunne ikke genkende nogen madvarer på kvitteringen."
+                    );
+
+                    return;
+                }
+
+                /*
+                 * Vis resultatet.
+                 */
+
+                showReceiptReview(
+                    foodItems
+                );
+            }
+
+            catch (error) {
+
+                console.error(
+                    "SKAB.: OCR FEJL:",
+                    error
+                );
+
+                alert(
+                    "Der opstod en OCR-fejl:\n\n" +
+                    error.message
+                );
+            }
+
+            finally {
+
+                scanReceiptBtn.disabled =
+                    false;
+
+                scanReceiptBtn.innerHTML =
+                    "<span>▣</span> Tilføj fra kvittering";
+
+                receiptInput.value =
+                    "";
+            }
+        }
+    );
+}
+
+
+/* ========================================
+   VIS KVITTERINGSRESULTAT
+======================================== */
+
+function showReceiptReview(
+    items
+) {
+
+    if (
+        !receiptReview ||
+        !receiptItems
+    ) {
+
+        console.error(
+            "SKAB.: receiptReview eller receiptItems blev ikke fundet i HTML."
+        );
+
+        alert(
+            "Kvitteringen blev læst, men resultatfeltet kunne ikke findes på siden."
+        );
+
+        return;
+    }
+
+    receiptItems.innerHTML =
+        "";
+
+    items.forEach(
+        function (item) {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "receipt-item";
+
+            row.innerHTML = `
+                <div class="receipt-item-top">
+
+                    <label class="receipt-checkbox">
+
+                        <input
+                            type="checkbox"
+                            class="receipt-select"
+                            checked
+                        >
+
+                    </label>
+
+                    <input
+                        type="text"
+                        class="receipt-name"
+                        value="${escapeHTML(item.name)}"
+                    >
+
+                </div>
+
+                <div class="receipt-item-fields">
+
+                    <div class="receipt-field">
+
+                        <label>
+                            Mængde
+                        </label>
+
+                        <input
+                            type="number"
+                            class="receipt-quantity"
+                            min="0"
+                            step="0.01"
+                            placeholder="Fx 200"
+                        >
+
+                    </div>
+
+                    <div class="receipt-field">
+
+                        <label>
+                            Enhed
+                        </label>
+
+                        <select
+                            class="receipt-unit"
+                        >
+
+                            <option value="g">
+                                g
+                            </option>
+
+                            <option value="kg">
+                                kg
+                            </option>
+
+                            <option value="ml">
+                                ml
+                            </option>
+
+                            <option value="dl">
+                                dl
+                            </option>
+
+                            <option value="l">
+                                l
+                            </option>
+
+                            <option
+                                value="stk"
+                                selected
+                            >
+                                stk.
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="receipt-field">
+
+                        <label>
+                            Udløbsdato
+                        </label>
+
+                        <input
+                            type="date"
+                            class="receipt-expiry"
+                        >
+
+                    </div>
+
+                </div>
+            `;
+
+            receiptItems.appendChild(
+                row
+            );
+        }
+    );
+
+    /*
+     * Vis resultatet.
+     */
 
     receiptReview.classList.add(
         "visible"
     );
 
+    /*
+     * Scroll ned.
+     */
 
-    if (closeReceiptReview) {
-
-        closeReceiptReview.addEventListener(
-            "click",
-            hideReceiptReview
-        );
-
-    }
-
-
-    if (addReceiptItemsBtn) {
-
-        addReceiptItemsBtn.addEventListener(
-            "click",
-            addSelectedReceiptItems
-        );
-
-    }
-
+    receiptReview.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 }
 
 
-/* =========================================================
-   OCR VARE
-========================================================= */
+/* ========================================
+   LUK KVITTERINGSRESULTAT
+======================================== */
 
-function createReceiptItem(
-    name,
-    index
-) {
+if (closeReceiptReview) {
 
-    const item =
-        document.createElement(
-            "article"
-        );
-
-
-    item.className =
-        "receipt-item";
-
-
-    const expiry =
-        new Date();
-
-
-    expiry.setDate(
-        expiry.getDate() + 7
-    );
-
-
-    const expiryString =
-        expiry
-            .toISOString()
-            .split("T")[0];
-
-
-    item.innerHTML = `
-
-        <div class="receipt-item-top">
-
-            <input
-                type="checkbox"
-                class="receipt-select"
-                checked
-            >
-
-            <input
-                type="text"
-                class="receipt-name"
-                value="${escapeHTML(
-                    name
-                )}"
-            >
-
-        </div>
-
-
-        <div class="receipt-item-fields">
-
-            <div class="receipt-field">
-
-                <label>
-                    Mængde
-                </label>
-
-                <input
-                    type="number"
-                    class="receipt-quantity"
-                    value="1"
-                    min="0"
-                    step="0.01"
-                >
-
-            </div>
-
-
-            <div class="receipt-field">
-
-                <label>
-                    Enhed
-                </label>
-
-                <select
-                    class="receipt-unit"
-                >
-
-                    <option value="stk">
-                        stk.
-                    </option>
-
-                    <option value="g">
-                        g
-                    </option>
-
-                    <option value="kg">
-                        kg
-                    </option>
-
-                    <option value="ml">
-                        ml
-                    </option>
-
-                    <option value="dl">
-                        dl
-                    </option>
-
-                    <option value="l">
-                        l
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="receipt-field">
-
-                <label>
-                    Udløbsdato
-                </label>
-
-                <input
-                    type="date"
-                    class="receipt-expiry"
-                    value="${expiryString}"
-                >
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    item.dataset.index =
-        index;
-
-
-    return item;
-
-}
-
-
-/* =========================================================
-   TILFØJ VALGTE OCR-VARER
-========================================================= */
-
-function addSelectedReceiptItems() {
-
-    if (!receiptItems) {
-        return;
-    }
-
-
-    const items =
-        receiptItems.querySelectorAll(
-            ".receipt-item"
-        );
-
-
-    let added = 0;
-
-
-    items.forEach(
-        function (item) {
-
-            const checkbox =
-                item.querySelector(
-                    ".receipt-select"
-                );
-
-
-            if (
-                !checkbox ||
-                !checkbox.checked
-            ) {
-
-                return;
-
-            }
-
-
-            const name =
-                item
-                    .querySelector(
-                        ".receipt-name"
-                    )
-                    .value
-                    .trim();
-
-
-            const quantity =
-                Number(
-                    item
-                        .querySelector(
-                            ".receipt-quantity"
-                        )
-                        .value
-                );
-
-
-            const unit =
-                item
-                    .querySelector(
-                        ".receipt-unit"
-                    )
-                    .value;
-
-
-            const expiry =
-                item
-                    .querySelector(
-                        ".receipt-expiry"
-                    )
-                    .value;
-
-
-            if (
-                !name ||
-                !expiry ||
-                isNaN(quantity) ||
-                quantity < 0
-            ) {
-
-                return;
-
-            }
-
-
-            ingredients.push({
-
-                id:
-                    Date.now() +
-                    Math.random(),
-
-                name:
-                    name,
-
-                quantity:
-                    quantity,
-
-                unit:
-                    unit,
-
-                expiry:
-                    expiry
-
-            });
-
-
-            added++;
-
-        }
-    );
-
-
-    if (added === 0) {
-
-        alert(
-            "Vælg mindst én vare."
-        );
-
-        return;
-
-    }
-
-
-    saveIngredients();
-
-    renderIngredients();
-
-    hideReceiptReview();
-
-
-    if (receiptInput) {
-
-        receiptInput.value = "";
-
-    }
-
-
-    alert(
-        added +
-        (
-            added === 1
-                ? " vare blev tilføjet til dit skab."
-                : " varer blev tilføjet til dit skab."
-        )
-    );
-
-}
-
-
-/* =========================================================
-   LUK OCR
-========================================================= */
-
-function hideReceiptReview() {
-
-    if (!receiptReview) {
-        return;
-    }
-
-
-    receiptReview.classList.remove(
-        "visible"
-    );
-
-}
-
-
- /* =========================================================
-    PWA
- ========================================================= */
-
-if (
-    "serviceWorker" in navigator
-) {
-
-    window.addEventListener(
-        "load",
+    closeReceiptReview.addEventListener(
+        "click",
         function () {
 
-            navigator.serviceWorker
-                .register(
-                    "./service-worker.js"
-                )
-                .catch(
-                    function (error) {
-
-                        console.log(
-                            "PWA fejl:",
-                            error
-                        );
-
-                    }
-                );
-
+            receiptReview.classList.remove(
+                "visible"
+            );
         }
     );
-
 }
+
+
+/* ========================================
+   TILFØJ VALGTE KVITTERINGSVARER
+======================================== */
+
+if (addReceiptItemsBtn) {
+
+    addReceiptItemsBtn.addEventListener(
+        "click",
+        function () {
+
+            if (!receiptItems) {
+                return;
+            }
+
+            const rows =
+                receiptItems.querySelectorAll(
+                    ".receipt-item"
+                );
+
+            let addedCount =
+                0;
+
+            for (
+                let i = 0;
+                i < rows.length;
+                i++
+            ) {
+
+                const row =
+                    rows[i];
+
+                const checkbox =
+                    row.querySelector(
+                        ".receipt-select"
+                    );
+
+                if (
+                    !checkbox ||
+                    !checkbox.checked
+                ) {
+                    continue;
+                }
+
+                const name =
+                    row
+                        .querySelector(
+                            ".receipt-name"
+                        )
+                        .value
+                        .trim();
+
+                const quantity =
+                    Number(
+                        row
+                            .querySelector(
+                                ".receipt-quantity"
+                            )
+                            .value
+                    );
+
+                const unit =
+                    row
+                        .querySelector(
+                            ".receipt-unit"
+                        )
+                        .value;
+
+                const expiry =
+                    row
+                        .querySelector(
+                            ".receipt-expiry"
+                        )
+                        .value;
+
+                /*
+                 * Tjek felterne.
+                 */
+
+                if (
+                    !name ||
+                    !expiry ||
+                    isNaN(quantity) ||
+                    quantity <= 0
+                ) {
+
+                    alert(
+                        "Udfyld navn, mængde og udløbsdato for alle valgte varer."
+                    );
+
+                    return;
+                }
+
+                /*
+                 * Tilføj til skabet.
+                 */
+
+                ingredients.push({
+
+                    id:
+                        Date.now() +
+                        Math.random(),
+
+                    name:
+                        name,
+
+                    quantity:
+                        quantity,
+
+                    unit:
+                        unit,
+
+                    expiry:
+                        expiry
+                });
+
+                addedCount++;
+            }
+
+            /*
+             * Gem.
+             */
+
+            if (addedCount > 0) {
+
+                saveIngredients();
+
+                renderIngredients();
+
+                receiptReview.classList.remove(
+                    "visible"
+                );
+
+                alert(
+                    addedCount === 1
+                        ? "1 ingrediens blev tilføjet til dit skab."
+                        : `${addedCount} ingredienser blev tilføjet til dit skab.`
+                );
+            }
+        }
+    );
+}
+
+
+/* ========================================
+   SLUT PÅ SCRIPT
+======================================== */
