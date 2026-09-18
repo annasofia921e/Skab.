@@ -1,302 +1,425 @@
 <!DOCTYPE html>
+
 <html lang="da">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Mit skab · SKAB.</title>
+```
+<meta charset="UTF-8">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+<title>Mit skab · SKAB.</title>
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="skab.css">
-    <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-<meta name="theme-color" content="#172a46">
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
 
-<meta name="apple-mobile-web-app-capable" content="yes">
+<link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
 
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="skab.css">
 
-<meta name="apple-mobile-web-app-title" content="SKAB.">
+<link rel="manifest" href="manifest.json">
+
+<meta
+    name="theme-color"
+    content="#172a46"
+>
+
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="SKAB."
+>
+```
+
 </head>
-
 
 <body>
 
-    <main class="skab-page">
+<main class="skab-page">
 
-        <!-- HEADER -->
+```
+<!-- HEADER -->
 
-        <header class="site-header">
+<header class="site-header">
 
-            <a href="index.html" class="logo">
-                SKAB<span>.</span>
-            </a>
+    <a
+        href="index.html"
+        class="logo"
+    >
+        SKAB<span>.</span>
+    </a>
 
-            <nav class="main-nav">
-                <a href="skab.html" class="active">Mit skab</a>
-                <a href="opskrifter.html">Opskrifter</a>
-                <a href="#">Favoritter</a>
-            </nav>
+    <nav class="main-nav">
 
-        </header>
+        <a
+            href="skab.html"
+            class="active"
+        >
+            Mit skab
+        </a>
+
+        <a href="opskrifter.html">
+            Opskrifter
+        </a>
+
+        <a href="favoritter.html">
+            Favoritter
+        </a>
+
+    </nav>
+
+</header>
 
 
-        <!-- INTRO -->
+<!-- INTRO -->
 
-        <section class="page-intro">
+<section class="page-intro">
+
+    <div>
+
+        <p class="eyebrow">
+            MIT SKAB
+        </p>
+
+        <h1>
+            Det du allerede<br>
+            har derhjemme.
+        </h1>
+
+    </div>
+
+    <p class="intro-description">
+        Hold styr på dine råvarer og få mest muligt
+        ud af det, du allerede har.
+    </p>
+
+</section>
+
+
+<!-- MIT SKAB -->
+
+<section class="pantry">
+
+
+    <!-- PANTRY HEADER -->
+
+    <div class="pantry-header">
+
+        <div>
+
+            <p class="small-label">
+                DIT SKAB
+            </p>
+
+            <h2>
+                Ingredienser
+            </h2>
+
+        </div>
+
+
+        <div class="pantry-actions">
+
+            <button
+                id="scanReceiptBtn"
+                class="receipt-button"
+                type="button"
+            >
+                <span>▣</span>
+                Tilføj fra kvittering
+            </button>
+
+
+            <button
+                id="addIngredientBtn"
+                class="add-button"
+                type="button"
+            >
+                <span>+</span>
+                Tilføj ingrediens
+            </button>
+
+        </div>
+
+
+        <!-- SKJULT FILINPUT TIL OCR -->
+
+        <input
+            type="file"
+            id="receiptInput"
+            accept="image/*"
+            capture="camera"
+        >
+
+    </div>
+
+
+    <!-- =====================================
+         OCR RESULTAT
+    ====================================== -->
+
+    <section
+        id="receiptReview"
+        class="receipt-review"
+    >
+
+        <div class="receipt-review-header">
 
             <div>
 
                 <p class="eyebrow">
-                    MIT SKAB
+                    KVITTERING
                 </p>
 
-                <h1>
-                    Det du allerede<br>
-                    har derhjemme.
-                </h1>
+                <h2>
+                    Tjek dine varer
+                </h2>
+
+                <p>
+                    Vælg de varer, du vil tilføje til dit skab.
+                </p>
 
             </div>
 
-            <p class="intro-description">
-                Hold styr på dine råvarer og få mest muligt
-                ud af det, du allerede har.
-            </p>
 
-        </section>
-
-
-        <!-- MIT SKAB -->
-
-        <section class="pantry">
-
-
-            <!-- HEADER -->
-
-            <div class="pantry-header">
-
-                <div>
-
-                    <p class="small-label">
-                        DIT SKAB
-                    </p>
-
-                    <h2>
-                        Ingredienser
-                    </h2>
-
-                </div>
-
-
-                <div class="pantry-actions">
-
-    <button id="scanReceiptBtn" class="receipt-button" type="button">
-        <span>▣</span>
-        Tilføj fra kvittering
-    </button>
-
-    <button id="addIngredientBtn" class="add-button" type="button">
-        <span>+</span>
-        Tilføj ingrediens
-    </button>
-
-</div>
-
-<input
-    type="file"
-    id="receiptInput"
-    accept="image/*"
-    capture="camera"
->
-            </div>
-
-
-            <!-- FORMULAR -->
-
-            <div
-                id="ingredientForm"
-                class="ingredient-form hidden"
+            <button
+                id="closeReceiptReview"
+                class="receipt-close"
+                type="button"
             >
+                ×
+            </button>
 
-                <div class="form-header">
-
-                    <div>
-                        <p class="small-label">
-                            NY INGREDIENS
-                        </p>
-
-                        <h3>
-                            Tilføj til dit skab
-                        </h3>
-                    </div>
-
-                    <button
-                        id="closeFormBtn"
-                        class="close-form"
-                        type="button"
-                    >
-                        ×
-                    </button>
-
-                </div>
-
-
-                <form id="newIngredientForm">
-                    <section id="receiptReview" class="receipt-review">
-    <div class="receipt-review-header">
-        <div>
-            <p class="eyebrow">KVITTERING</p>
-            <h2>Tjek dine varer</h2>
-            <p>
-                Vælg de varer, du vil tilføje til dit skab.
-            </p>
         </div>
 
+
+        <div
+            id="receiptItems"
+            class="receipt-items"
+        >
+            <!-- Varerne fra kvitteringen kommer her -->
+        </div>
+
+
         <button
-            id="closeReceiptReview"
-            class="receipt-close"
+            id="addReceiptItemsBtn"
+            class="receipt-add-all"
             type="button"
         >
-            ×
+            Tilføj til mit skab
         </button>
-    </div>
 
-    <div id="receiptItems" class="receipt-items">
-        <!-- Varerne fra kvitteringen kommer her -->
-    </div>
+    </section>
 
-    <button
-        id="addReceiptItemsBtn"
-        class="receipt-add-all"
-        type="button"
+
+    <!-- =====================================
+         MANUEL INGREDIENS
+    ====================================== -->
+
+    <div
+        id="ingredientForm"
+        class="ingredient-form hidden"
     >
-        Tilføj til mit skab
-    </button>
-</section>
 
-                    <div class="form-fields">
+        <div class="form-header">
 
+            <div>
 
-                        <div class="form-field">
+                <p class="small-label">
+                    NY INGREDIENS
+                </p>
 
-                            <label for="ingredientName">
-                                Ingrediens
-                            </label>
+                <h3>
+                    Tilføj til dit skab
+                </h3>
 
-                            <input
-                                type="text"
-                                id="ingredientName"
-                                placeholder="Fx spinat"
-                                required
-                            >
-
-                        </div>
+            </div>
 
 
-                        <div class="form-field">
+            <button
+                id="closeFormBtn"
+                class="close-form"
+                type="button"
+            >
+                ×
+            </button>
 
-    <label for="ingredientQuantity">
-        Mængde
-    </label>
-
-    <div class="quantity-input">
-
-        <input
-            type="number"
-            id="ingredientQuantity"
-            placeholder="Fx 200"
-            min="0"
-            step="0.01"
-            required
-        >
-
-        <select id="ingredientUnit" required>
-            <option value="g">g</option>
-            <option value="kg">kg</option>
-            <option value="ml">ml</option>
-            <option value="dl">dl</option>
-            <option value="l">l</option>
-            <option value="stk">stk.</option>
-        </select>
-
-    </div>
-
-</div>
+        </div>
 
 
-                        <div class="form-field">
+        <form id="newIngredientForm">
 
-                            <label for="ingredientExpiry">
-                                Udløbsdato
-                            </label>
-
-                            <input
-                                type="date"
-                                id="ingredientExpiry"
-                                required
-                            >
-
-                        </div>
+            <div class="form-fields">
 
 
-                        <button
-                            type="submit"
-                            class="save-ingredient"
+                <!-- INGREDIENS -->
+
+                <div class="form-field">
+
+                    <label for="ingredientName">
+                        Ingrediens
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ingredientName"
+                        placeholder="Fx spinat"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- MÆNGDE -->
+
+                <div class="form-field">
+
+                    <label for="ingredientQuantity">
+                        Mængde
+                    </label>
+
+                    <div class="quantity-input">
+
+                        <input
+                            type="number"
+                            id="ingredientQuantity"
+                            placeholder="Fx 200"
+                            min="0"
+                            step="0.01"
+                            required
                         >
-                            Tilføj til mit skab
-                        </button>
+
+                        <select
+                            id="ingredientUnit"
+                            required
+                        >
+
+                            <option value="g">
+                                g
+                            </option>
+
+                            <option value="kg">
+                                kg
+                            </option>
+
+                            <option value="ml">
+                                ml
+                            </option>
+
+                            <option value="dl">
+                                dl
+                            </option>
+
+                            <option value="l">
+                                l
+                            </option>
+
+                            <option value="stk">
+                                stk.
+                            </option>
+
+                        </select>
 
                     </div>
 
-                </form>
+                </div>
+
+
+                <!-- UDLØBSDATO -->
+
+                <div class="form-field">
+
+                    <label for="ingredientExpiry">
+                        Udløbsdato
+                    </label>
+
+                    <input
+                        type="date"
+                        id="ingredientExpiry"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- GEM -->
+
+                <button
+                    type="submit"
+                    class="save-ingredient"
+                >
+                    Tilføj til mit skab
+                </button>
+
 
             </div>
 
+        </form>
 
-            <!-- INGREDIENTS -->
-
-            <div id="ingredientList">
-
-                <!-- JavaScript indsætter ingredienser her -->
-
-            </div>
+    </div>
 
 
-        </section>
+    <!-- =====================================
+         INGREDIENSER
+    ====================================== -->
+
+    <div id="ingredientList">
+
+        <!-- JavaScript indsætter ingredienser her -->
+
+    </div>
 
 
-        <!-- FOOTER -->
-
-        <footer class="page-footer">
-
-            <span>
-                BRUG DET, FØR DU KØBER NYT.
-            </span>
-
-            <span>
-                SKAB. © 2026
-            </span>
-
-        </footer>
-
-    </main>
- 
+</section>
 
 
-    
+<!-- FOOTER -->
+
+<footer class="page-footer">
+
+    <span>
+        BRUG DET, FØR DU KØBER NYT.
+    </span>
+
+    <span>
+        SKAB. © 2026
+    </span>
+
+</footer>
+```
+
+</main>
+
+<!-- OCR -->
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.3/dist/tesseract.min.js"></script>
-<script src="script.js"></script>
-</body>
 
+<!-- SKAB JAVASCRIPT -->
+
+<script src="script.js"></script>
+
+</body>
 
 </html>
