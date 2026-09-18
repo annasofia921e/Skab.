@@ -1083,16 +1083,15 @@ if (scanReceiptBtn && receiptInput) {
 
             try {
 
+                console.log("Starter OCR...");
+
+                const worker =
+                    await Tesseract.createWorker("eng");
+
+                console.log("OCR-worker klar.");
+
                 const result =
-                    await Tesseract.recognize(
-                        receipt,
-                        "dan",
-                        {
-                            logger: function (info) {
-                                console.log(info);
-                            }
-                        }
-                    );
+                    await worker.recognize(receipt);
 
                 const text =
                     result.data.text;
@@ -1102,8 +1101,10 @@ if (scanReceiptBtn && receiptInput) {
                     text
                 );
 
+                await worker.terminate();
+
                 alert(
-                    "Kvitteringen er læst!\n\n" +
+                    "Tekst fundet på kvitteringen:\n\n" +
                     text
                 );
 
@@ -1115,7 +1116,8 @@ if (scanReceiptBtn && receiptInput) {
                 );
 
                 alert(
-                    "Der opstod en fejl, da kvitteringen skulle læses."
+                    "OCR kunne ikke læse kvitteringen.\n\n" +
+                    error.message
                 );
 
             } finally {
