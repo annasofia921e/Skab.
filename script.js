@@ -1865,3 +1865,5 @@ if (addReceiptItemsBtn) {
     );
 
 }
+console.log("SKAB. NY SCRIPT VERSION 2026");
+alert("NY SCRIPT VERSION VIRKER");
