@@ -1709,11 +1709,17 @@ if (
                  * Læs det behandlede billede.
                  */
 
-                const result =
-                      await worker.recognize(
-                          processedImage
-                );
+               const result =
+                    await worker.recognize(
+                    processedImage
+                 );
 
+                const cleanedLines =
+                    cleanReceiptText(result.data.text);
+
+                const receiptText =
+                    cleanedLines.join("\n");
+                
                 const text =
                     result.data.text || "";
 
