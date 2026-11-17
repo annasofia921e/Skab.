@@ -1,122 +1,98 @@
 <!DOCTYPE html>
 <html lang="da">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Opskrifter · SKAB.</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
-        rel="stylesheet"
-    >
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="opskrifter.css">
-    <link rel="manifest" href="manifest.json">
-
-<meta name="theme-color" content="#172a46">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-<meta name="apple-mobile-web-app-title" content="SKAB.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#263d32">
+  <title>Opskrifter · SKAB.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="opskrifter.css">
+  <link rel="manifest" href="manifest.json">
 </head>
-
-
 <body>
+<main class="recipes-page">
+  <header class="site-header">
+    <a href="index.html" class="logo">SKAB<span>.</span></a>
+    <nav class="main-nav" aria-label="Hovednavigation">
+      <a href="skab.html">Mit skab</a>
+      <a href="opskrifter.html" class="active">Opskrifter</a>
+      <a href="favoritter.html">Favoritter</a>
+    </nav>
+  </header>
 
-    <main class="opskrifter-page">
+  <section class="recipes-intro">
+    <p class="eyebrow">GOD MAD · MINDRE SPILD</p>
+    <div class="intro-heading-row">
+      <div>
+        <h1>Opskrifter<span>.</span></h1>
+        <p class="intro-copy">Madidéer med udgangspunkt i det, du allerede har. Find inspiration, brug dine råvarer, og gem dine egne favoritter.</p>
+      </div>
+      <button class="primary-button" id="openRecipeForm" type="button">＋ Tilføj opskrift</button>
+    </div>
+    <div class="intro-rule"><span>DET SKAL BRUGES, FØR DET KØBES</span><span id="recipeCount">0 OPSKRIFTER</span></div>
+  </section>
 
-        <!-- HEADER -->
+  <section class="recipe-tools" aria-label="Søg og filtrer opskrifter">
+    <label class="search-field">
+      <span aria-hidden="true">⌕</span>
+      <input id="recipeSearch" type="search" placeholder="Søg efter opskrift eller ingrediens…" autocomplete="off">
+    </label>
+    <select id="categoryFilter" aria-label="Filtrer efter kategori">
+      <option value="">Alle kategorier</option>
+    </select>
+  </section>
 
-        <header class="site-header">
+  <section id="recipeList" class="recipe-grid" aria-live="polite"></section>
 
-            <a href="index.html" class="logo">
-                SKAB<span>.</span>
-            </a>
+  <footer class="page-footer">
+    <span>BRUG DET, FØR DU KØBER NYT.</span>
+    <span>SKAB. © 2026</span>
+  </footer>
+</main>
 
-            <nav class="main-nav">
-                <a href="skab.html">Mit skab</a>
-                <a href="opskrifter.html" class="active">Opskrifter</a>
-                <a href="favoritter.html">Favoritter</a>
-            </nav>
+<dialog class="recipe-dialog" id="recipeDialog">
+  <form id="recipeForm" class="recipe-form" novalidate>
+    <div class="dialog-heading">
+      <div><p class="eyebrow">DIN OPSKRIFTSSAMLING</p><h2>Tilføj opskrift<span>.</span></h2></div>
+      <button type="button" class="dialog-close" id="closeRecipeForm" aria-label="Luk">×</button>
+    </div>
 
-        </header>
+    <div class="import-panel">
+      <label for="recipeUrl">Har du fundet en opskrift på nettet?</label>
+      <div class="url-row">
+        <input id="recipeUrl" type="url" placeholder="Indsæt link til opskriften…" inputmode="url">
+        <button class="secondary-button" id="importRecipeButton" type="button">Hent opskrift</button>
+      </div>
+      <p id="importStatus" class="field-help">Vi forsøger at hente titel, ingredienser og fremgangsmåde. Du kan altid rette det bagefter.</p>
+    </div>
 
+    <div class="form-divider"><span>ELLER OPRET DEN SELV</span></div>
 
-        <!-- INTRO -->
+    <div class="form-grid">
+      <label class="form-field full"><span>Opskriftens navn *</span><input name="name" required maxlength="90" placeholder="Fx Cremet svampepasta"></label>
+      <label class="form-field"><span>Kategori</span><input name="category" maxlength="40" placeholder="Fx Pasta, vegetarisk…"></label>
+      <label class="form-field"><span>Tid</span><input name="time" maxlength="30" placeholder="Fx 30 min"></label>
+      <label class="form-field"><span>Sværhedsgrad</span><select name="difficulty"><option>Nem</option><option>Middel</option><option>Avanceret</option></select></label>
+      <label class="form-field full"><span>Kort beskrivelse</span><textarea name="description" rows="2" maxlength="240" placeholder="Hvad gør retten særlig?"></textarea></label>
+    </div>
 
-        <section class="page-intro">
+    <div class="form-section-heading"><h3>Ingredienser</h3><button type="button" class="text-button" id="addIngredientRow">＋ Tilføj ingrediens</button></div>
+    <div id="ingredientRows" class="ingredient-input-list"></div>
 
-            <div>
+    <div class="form-section-heading"><h3>Fremgangsmåde</h3><button type="button" class="text-button" id="addStepRow">＋ Tilføj trin</button></div>
+    <div id="stepRows" class="step-input-list"></div>
 
-               
+    <p class="form-error" id="recipeFormError" role="alert"></p>
+    <div class="form-actions">
+      <button type="button" class="quiet-button" id="cancelRecipeForm">Annuller</button>
+      <button type="submit" class="primary-button">Gem opskrift</button>
+    </div>
+  </form>
+</dialog>
 
-                <h1>
-                    Opskrifter<br>
-                    
-                </h1>
-
-            </div>
-
-            <p class="intro-description">
-                Opskrifter baseret på det,
-                du allerede har derhjemme.
-            </p>
-
-        </section>
-
-
-        <!-- OPSKRIFTER -->
-
-        <section class="recipes">
-
-            <div class="recipes-header">
-
-                <div>
-                    
-
-                    
-                </div>
-
-            </div>
-
-
-            <div id="recipeList" class="recipe-grid">
-
-                <!-- JavaScript indsætter opskrifter her -->
-
-            </div>
-
-        </section>
-
-
-        <!-- FOOTER -->
-
-        <footer class="page-footer">
-
-            <span>
-                BRUG DET, FØR DU KØBER NYT.
-            </span>
-
-            <span>
-                SKAB. © 2026
-            </span>
-
-        </footer>
-
-    </main>
-
-
-    <script src="script.js"></script>
-    <script src="opskrifter.js"></script>
-
+<script src="opskrifter.js"></script>
 </body>
-
 </html>
